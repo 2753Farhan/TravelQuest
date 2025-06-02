@@ -45,5 +45,5 @@ const config = {
     }
   }
 };
-
+export default config;
 export const db = knex(config.development);
