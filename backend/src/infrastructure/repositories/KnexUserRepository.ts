@@ -4,7 +4,7 @@ import { UserRepository } from "../../domain/interfaces/UserRepository";
 
 
 export class KnexUserRepository implements UserRepository{
-    async create(user: User): Promise<User> {
+    async create(user: UserEntity): Promise<UserEntity> {
         const [createdUser] = await db('users')
         .insert({
             name: user.name,
