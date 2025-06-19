@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon -x tsx src/index.ts",
     "start": "tsx src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "knex migrate:latest":  "knex migrate:latest --knexfile src/infrastructure/database/knex/knexfile.ts"
   },
   "keywords": [],
   "author": "",
