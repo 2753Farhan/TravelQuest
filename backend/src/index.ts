@@ -7,8 +7,8 @@ const app = express();
 
 app.use(express.json());
 app.use("/users", userRoutes);
-app.use("/posts", postRoutes); // New route
-// app.use(errorHandler);
+app.use("/travel-logs", postRoutes); // New route
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

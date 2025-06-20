@@ -1,4 +1,4 @@
-import { IsString, MinLength, MaxLength, IsUUID } from "class-validator";
+import { IsString, MinLength, MaxLength, IsUUID, IsDate, IsDateString } from "class-validator";
 import { PostEntity } from "../../domain/entities/Post";
 
 export class CreatePostDto {
@@ -12,6 +12,13 @@ export class CreatePostDto {
 
   @IsUUID() // Validates that userId is a valid UUID
   userId!: string; // Changed from userId to user_Id to match the request
+
+  @IsDateString()
+    startedAt!: string; 
+
+  @IsDateString()
+  endAt!: string; 
+
 }
 
 export class PostResponseDto {
@@ -19,7 +26,9 @@ export class PostResponseDto {
     public readonly id: string,
     public readonly title: string,
     public readonly content: string,
-    public readonly userId: string, // Keep as userId for consistency with PostEntity
+    public readonly startedAt: Date,
+    public readonly endAt: Date,
+    public readonly userId: string,
     public readonly createdAt: Date
   ) {}
 
@@ -28,7 +37,9 @@ export class PostResponseDto {
       post.id,
       post.title,
       post.content,
-      post.userId, // Changed from post.user_Id to post.userId to match PostEntity
+      post.startedAt,
+      post.endAt,
+      post.userId, 
       post.createdAt
     );
   }

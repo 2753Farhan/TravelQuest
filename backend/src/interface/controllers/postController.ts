@@ -22,7 +22,6 @@ export class PostController {
         .join("; ");
       throw new BadRequestError(message);
     }
-
     const post = await this.createPost.execute(dto);
     res.status(201).json(PostResponseDto.fromDomain(post));
   }

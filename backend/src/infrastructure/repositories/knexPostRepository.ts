@@ -11,6 +11,9 @@ export class KnexPostRepository implements PostRepository{
                 title: post.title,
                 content: post.content,
                 user_id: post.userId,
+                started_at: post.startedAt,
+                end_at: post.endAt,
+
             })
             .returning('*');
             return PostEntity.fromRaw(createdPost);
@@ -18,6 +21,21 @@ export class KnexPostRepository implements PostRepository{
             throw new BadRequestError("Failed to create Post" + error.message);
         }
     }
+
+//   return knex.schema.alterTable('posts', (table) => {
+//     table.timestamp('started_at')
+//       .nullable()
+//       .comment('When the post activity begins');
+    
+//     table.timestamp('end_at')
+//       .nullable()
+//       .comment('When the post activity ends');
+//   });
+    // table.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"));
+    // table.string("title").notNullable();
+    // table.text("content").notNullable();
+    // table.uuid("user_id").notNullable().references("id").inTable("users");
+    // table.timestamp("created_at").defaultTo(knex.fn.now());
 
 
     async findAll(): Promise<PostEntity[]> {
