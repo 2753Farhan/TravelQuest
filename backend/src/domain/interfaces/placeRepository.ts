@@ -9,5 +9,5 @@ export interface PlaceRepository {
   searchByName(name: string): Promise<Place[]>;
   searchNearby(point: { x: number; y: number }, radius: number): Promise<Place[]>;
   update(place_id: string, updates: Partial<Place>): Promise<Place>;
-  delete(place_id: string): Promise<void>;
+  delete(place_id: string): Promise<Boolean>;
 }

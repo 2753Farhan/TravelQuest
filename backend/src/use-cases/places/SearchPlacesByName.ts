@@ -1,11 +1,10 @@
-// src/use-cases/places/GetPlaces.ts
+// src/use-cases/places/SearchPlacesByName.ts
 import { Place } from "../../domain/entities/Place";
 import { PlaceRepository } from "../../domain/interfaces/placeRepository";
-
-export class GetPlaces {
+export class SearchPlacesByName {
   constructor(private readonly placeRepository: PlaceRepository) {}
 
-  async execute(): Promise<Place[]> {
-    return this.placeRepository.findAll();
+  async execute(name: string): Promise<Place[]> {
+    return this.placeRepository.searchByName(name);
   }
 }

@@ -1,7 +1,7 @@
 // src/interface/dto/CreatePlaceDto.ts
-import { IsString, IsEnum, IsObject, IsOptional, IsNumber } from 'class-validator';
-import { Place } from '../../domain/entities/Place';
-import { PlaceTypes } from '../../shared/types';
+import { IsEnum, IsString, IsNumber, IsObject, IsOptional } from "class-validator";
+import { PlaceTypes } from "../../shared/types";
+import { Place } from "../../domain/entities/Place";
 export class CreatePlaceDto {
   @IsEnum(PlaceTypes)
   type!: PlaceTypes;
@@ -10,10 +10,10 @@ export class CreatePlaceDto {
   name!: string;
 
   @IsNumber()
-  latitude!: number;
+  x!: number; // longitude
 
   @IsNumber()
-  longitude!: number;
+  y!: number; // latitude
 
   @IsString()
   @IsOptional()
@@ -27,9 +27,9 @@ export class CreatePlaceDto {
 export class PlaceResponseDto {
   constructor(
     public readonly place_id: string,
-    public readonly type: PlaceTypes,
+    public readonly type: string,
     public readonly name: string,
-    public readonly coordinates: { lat: number; lng: number },
+    public readonly coordinates: { x: number; y: number },
     public readonly address?: string,
     public readonly details: Record<string, any> = {},
     public readonly created_at?: Date,
@@ -39,9 +39,9 @@ export class PlaceResponseDto {
   static fromDomain(place: Place) {
     return new PlaceResponseDto(
       place.place_id,
-      place.type as PlaceTypes,
+      place.type,
       place.name,
-      { lat: place.geo_coordinates.y, lng: place.geo_coordinates.x },
+      { x: place.geo_coordinates.x, y: place.geo_coordinates.y },
       place.address,
       place.details,
       place.created_at,
