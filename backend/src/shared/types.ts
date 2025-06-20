@@ -1,10 +1,7 @@
 export enum PlaceTypes {
   LODGING = 'lodging',
   DINING = 'dining',
-  ATTRACTION = 'attraction',
-  LOCATION = 'location',
-  ACTIVITY = 'activity',
-  OTHER = 'other'
+  ATTRACTION = 'attraction'
 }
 
 export enum VisibilitySettings {
