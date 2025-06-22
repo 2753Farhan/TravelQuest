@@ -12,9 +12,7 @@ export class CreatePost {
           endAt: new Date(postdata.endAt)
         };
 
-    console.log("Creating post with data:", postData);
     const postEntity = new PostEntity("", postData.title, postData.content, postData.startedAt, postData.endAt, postData.userId);
-    console.log("Post entity created:", postEntity);
     return await this.postRepository.create(postEntity);
   }
 }
