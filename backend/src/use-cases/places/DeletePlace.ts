@@ -1,4 +1,3 @@
-// src/use-cases/places/DeletePlace.ts
 import { PlaceRepository } from "../../domain/interfaces/placeRepository";
 import { NotFoundError } from "../../interface/errors/NotFoundError";
 

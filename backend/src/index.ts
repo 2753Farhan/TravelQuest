@@ -23,7 +23,7 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
-// Routes
+
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/travel-logs", travelLogRoutes);

@@ -1,4 +1,4 @@
-// src/infrastructure/repositories/KnexTransportRepository.ts
+
 import { db } from "../database/knex/knexfile";
 import { TransportOption } from "../../domain/entities/TransportOption";
 import { TransportRoute } from "../../domain/entities/TransportRoute";

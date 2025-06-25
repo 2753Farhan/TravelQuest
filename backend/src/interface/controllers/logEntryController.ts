@@ -35,7 +35,6 @@ export class LogEntryController {
 
     if (expand === 'all') {
       const logEntries = await this.getLogEntries.execute(logId);
-      // For each entry, fetch expanded data if needed
       res.json(logEntries.map(LogEntryResponseDto.fromDomain));
     } else {
       const logEntries = await this.getLogEntries.execute(logId);

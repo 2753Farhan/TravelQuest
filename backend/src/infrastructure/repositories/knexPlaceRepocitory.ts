@@ -1,4 +1,4 @@
-// src/infrastructure/repositories/KnexPlaceRepository.ts
+
 import { db } from "../database/knex/knexfile";
 import { Place } from "../../domain/entities/Place";
 import { PlaceRepository } from "../../domain/interfaces/placeRepository";

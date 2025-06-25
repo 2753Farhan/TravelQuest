@@ -1,4 +1,3 @@
-// src/domain/interfaces/TransportRepository.ts
 import { TransportOption } from "../entities/TransportOption";
 import { TransportRoute } from "../entities/TransportRoute";
 

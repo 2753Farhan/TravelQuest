@@ -1,4 +1,3 @@
-// src/use-cases/places/GetPlaceById.ts
 import { Place } from "../../domain/entities/Place";
 import { PlaceRepository } from "../../domain/interfaces/placeRepository";
 import { NotFoundError } from "../../interface/errors/NotFoundError";

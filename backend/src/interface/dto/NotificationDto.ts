@@ -1,4 +1,4 @@
-// src/interface/dto/NotificationDto.ts
+
 import { IsString, IsUUID, IsBoolean, IsOptional, IsEnum } from "class-validator";
 import { Notification, NotificationType } from "../../domain/entities/Notification";
 

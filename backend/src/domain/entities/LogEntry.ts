@@ -1,6 +1,3 @@
-import { title } from "process"
-import { Place } from "./Place"
-import { TransportRoute } from "./TransportRoute"
 
 export class LogEntry {
     constructor(

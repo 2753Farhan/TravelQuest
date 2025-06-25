@@ -1,4 +1,4 @@
-// backend\src\interface\dto\TravelGroupDto.ts
+
 import { IsString, IsUUID, IsDateString, IsOptional, IsEnum, IsObject } from "class-validator";
 import { TravelGroup, TripMember, TripItem } from "../../domain/entities/TravelGroup";
 import { TripStatus } from "../../shared/types";

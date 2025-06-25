@@ -1,4 +1,3 @@
-// src/use-cases/transports/CreateTransportRoute.ts
 import { TransportRoute } from "../../domain/entities/TransportRoute";
 import { TransportRepository } from "../../domain/interfaces/transportRepository";
 import { CreateTransportRouteDto } from "../../interface/dto/CreateTransportRouteDto";

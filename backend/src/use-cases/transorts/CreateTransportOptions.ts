@@ -1,4 +1,3 @@
-// src/use-cases/transports/CreateTransportOption.ts
 import { TransportOption } from "../../domain/entities/TransportOption";
 import { TransportRepository } from "../../domain/interfaces/transportRepository";
 import { CreateTransportOptionDto } from "../../interface/dto/CreateTransportOptionDto";

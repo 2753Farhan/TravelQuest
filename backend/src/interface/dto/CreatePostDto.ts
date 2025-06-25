@@ -10,8 +10,8 @@ export class CreatePostDto {
   @IsString()
   content!: string;
 
-  @IsUUID() // Validates that userId is a valid UUID
-  userId!: string; // Changed from userId to user_Id to match the request
+  @IsUUID() 
+  userId!: string;
 
   @IsDateString()
     startedAt!: string; 

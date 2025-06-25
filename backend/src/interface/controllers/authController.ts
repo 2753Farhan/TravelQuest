@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
 
-// Extend Express Request interface to include 'user'
+
 declare global {
   namespace Express {
     interface UserPayload {

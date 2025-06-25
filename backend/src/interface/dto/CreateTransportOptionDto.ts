@@ -6,11 +6,11 @@ export class CreateTransportOptionDto {
   transport_type!: string; 
   @IsString()
   @IsOptional()
-  provider?: string; // "Delta Airlines", "Amtrak", etc.
+  provider?: string;
 
   @IsObject()
   @IsOptional()
-  details?: Record<string, any>; // { baggage_allowance: "23kg", class: "economy" }
+  details?: Record<string, any>;
 }
 
 export class TransportOptionResponseDto {

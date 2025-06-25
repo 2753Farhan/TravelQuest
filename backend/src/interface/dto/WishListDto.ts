@@ -78,14 +78,14 @@ export class FindNearbyWishlistItemsDto {
     
 
   @IsNumber()
-  x!: number; // longitude
+  x!: number;
 
   @IsNumber()
-  y!: number; // latitude
+  y!: number;
 
   @IsNumber()
   @IsOptional()
-  radius?: number; // in meters
+  radius?: number;
 }
 
 
@@ -98,7 +98,7 @@ export class FindOverlappingWishlistsDto {
   wishlistId?: string;
 }
 
-// src/interface/dto/WishListDto.ts
+
 export class OverlappingWishlistResponseDto {
   constructor(
     public readonly item: {

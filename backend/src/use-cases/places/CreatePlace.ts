@@ -1,4 +1,3 @@
-// src/use-cases/places/CreatePlace.ts
 import { Place } from "../../domain/entities/Place";
 import { PlaceRepository } from "../../domain/interfaces/placeRepository";
 import { CreatePlaceDto } from "../../interface/dto/CreatePlaceDto";

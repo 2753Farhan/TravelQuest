@@ -1,4 +1,3 @@
-// src/interface/routes/notificationRoutes.ts
 import { Router } from "express";
 import { NotificationController } from "../controllers/NotificationController";
 import { KnexNotificationRepository } from "../../infrastructure/repositories/knexNotificationRepository";

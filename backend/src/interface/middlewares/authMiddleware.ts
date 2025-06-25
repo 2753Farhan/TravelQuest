@@ -26,7 +26,7 @@ export const authMiddleware = async (
     const token = authHeader.split(' ')[1];
     const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string; role: UserRoles };
 
-    // Verify user exists
+  
     const userRepository = new KnexUserRepository();
     const user = await userRepository.findById(payload.userId);
     if (!user) {

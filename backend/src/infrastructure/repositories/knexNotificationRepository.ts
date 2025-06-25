@@ -1,4 +1,3 @@
-// src/infrastructure/repositories/knexNotificationRepository.ts
 import { db } from "../database/knex/knexfile";
 import { Notification } from "../../domain/entities/Notification";
 import { NotificationRepository } from "../../domain/interfaces/notificationRepositoryInterface";

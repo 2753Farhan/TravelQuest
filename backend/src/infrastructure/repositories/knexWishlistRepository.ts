@@ -87,7 +87,6 @@ export class KnexWishlistRepository implements WishlistRepository {
     return deleted > 0;
   }
 
-  // src/infrastructure/repositories/knexWishlistRepository.ts
 async findNearbyItems(
   userId: string,
   point: { x: number; y: number },
@@ -136,7 +135,7 @@ async findOverlappingWishlists(
     userPlacesSubquery.where('wishlist_id', wishlistId);
   }
 
-  // Main query to find other users' wishlists with matching place_ids
+
   const overlapping = await db('wishlist_items as wi')
     .join('wishlists as w', 'wi.wishlist_id', 'w.wishlist_id')
     .join('places as p', 'wi.place_id', 'p.place_id')
@@ -158,13 +157,13 @@ async findOverlappingWishlists(
       db.raw('ST_Y(p.geo_coordinates::geometry) as place_y')
     )
     .where('wi.place_id', 'in', userPlacesSubquery)
-    .where('w.user_id', '!=', userId) // Exclude the user's own wishlists
+    .where('w.user_id', '!=', userId) 
     .where('wi.is_active', true)
     .where(function () {
       this.where('w.visibility', 'public').orWhere('w.visibility', 'friends_only');
     });
 
-  // Group results by wishlist
+
   const grouped = overlapping.reduce((acc, row) => {
     const wishlist = Wishlist.fromRaw({
       wishlist_id: row.wishlist_id,

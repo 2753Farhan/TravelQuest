@@ -1,11 +1,11 @@
-// backend\src\domain\entities\Chat.ts
+
 export class Chat {
   constructor(
     public readonly chatId: string,
-    public readonly type: string, // 'group', 'direct'
-    public readonly parentId?: string, // For threaded replies
-    public readonly groupId?: string, // For group chats
-    public readonly userId?: string, // For direct messages
+    public readonly type: string, 
+    public readonly parentId?: string, 
+    public readonly groupId?: string, 
+    public readonly userId?: string,
     public readonly title?: string,
     public readonly content?: string,
     public readonly details: Record<string, any> = {},

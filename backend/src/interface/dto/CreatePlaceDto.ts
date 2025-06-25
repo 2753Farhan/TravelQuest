@@ -1,4 +1,4 @@
-// src/interface/dto/CreatePlaceDto.ts
+
 import { IsEnum, IsString, IsNumber, IsObject, IsOptional } from "class-validator";
 import { PlaceTypes } from "../../shared/types";
 import { Place } from "../../domain/entities/Place";

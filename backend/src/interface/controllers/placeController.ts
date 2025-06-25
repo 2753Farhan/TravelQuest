@@ -1,4 +1,4 @@
-// src/interface/controllers/PlaceController.ts
+
 import { Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";

@@ -1,4 +1,3 @@
-// src/use-cases/places/FindNearbyPlaces.ts
 import { Place } from "../../domain/entities/Place";
 import { PlaceRepository } from "../../domain/interfaces/placeRepository";
 export class FindNearbyPlaces {

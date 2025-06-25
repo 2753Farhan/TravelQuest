@@ -1,4 +1,4 @@
-// backend\src\interface\dto\ChatDto.ts
+
 import { IsString, IsUUID, IsOptional, IsEnum, IsObject } from "class-validator";
 import { Chat } from "../../domain/entities/Chat";
 

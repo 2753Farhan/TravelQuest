@@ -1,4 +1,4 @@
-// src/domain/entities/TransportOption.ts
+
 export class TransportOption {
   constructor(
     public readonly transport_id: string,

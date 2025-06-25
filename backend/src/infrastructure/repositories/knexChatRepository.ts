@@ -1,4 +1,3 @@
-// backend\src\infrastructure\repositories\knexChatRepository.ts
 import { db } from "../database/knex/knexfile";
 import { Chat } from "../../domain/entities/Chat";
 import { ChatRepository } from "../../domain/interfaces/chatRepository";

@@ -1,4 +1,3 @@
-// src/use-cases/transports/FindTransportRoutes.ts
 import { TransportRoute } from "../../domain/entities/TransportRoute";
 import { TransportRepository } from "../../domain/interfaces/transportRepository";
 export class FindTransportRoutes {

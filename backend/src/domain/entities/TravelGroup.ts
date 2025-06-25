@@ -1,4 +1,4 @@
-// backend\src\domain\entities\TravelGroup.ts
+
 import { TripStatus } from "../../shared/types";
 
 export class TravelGroup {

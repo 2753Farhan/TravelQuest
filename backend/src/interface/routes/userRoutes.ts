@@ -8,11 +8,10 @@ import { UserRoles } from "../../shared/types";
 const router = Router();
 const controller = new UserController();
 
-// Authenticated routes
 router.get("/me", authMiddleware, asyncHandler(controller.getCurrent.bind(controller)));
 router.patch("/me", authMiddleware, asyncHandler(controller.update.bind(controller)));
 
-// Admin routes
+
 router.get("/", 
   authMiddleware, 
   roleMiddleware([UserRoles.ADMIN, UserRoles.MODERATOR]), 

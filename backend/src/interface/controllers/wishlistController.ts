@@ -99,7 +99,7 @@ export class WishlistController {
       throw new BadRequestError(errors.toString());
     }
 
-    const radius = dto.radius || 5000; // default 5km radius
+    const radius = dto.radius || 5000; 
     const items = await this.findNearbyWishlistItems.execute(
       userId,
       { x: dto.x, y: dto.y },

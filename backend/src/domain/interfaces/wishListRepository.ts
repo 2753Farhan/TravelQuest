@@ -20,7 +20,7 @@ export interface WishlistRepository {
   
  findOverlappingWishlists(
     userId: string,
-    wishlistId?: string // Optional: restrict to a specific wishlist
+    wishlistId?: string 
   ): Promise<{
     wishlist: Wishlist;
     commonItems: WishlistItem[];

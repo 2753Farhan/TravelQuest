@@ -1,29 +1,27 @@
-// src/interface/dto/CreateTransportRouteDto.ts
 import { TransportRoute } from "../../domain/entities/TransportRoute";
 import { IsString, IsNumber, IsOptional, IsObject, IsUUID } from "class-validator";
 
 export class CreateTransportRouteDto {
   @IsUUID()
-  transport_id!: string; // Reference to TransportOption
+  transport_id!: string; 
 
   @IsUUID()
-  start_place_id!: string; // Origin place ID
-
+  start_place_id!: string; 
   @IsString()
   @IsOptional()
-  end_place_id?: string; // Destination place ID
+  end_place_id?: string; 
 
   @IsNumber()
   @IsOptional()
-  cost?: number; // In USD
+  cost?: number; 
 
   @IsString()
   @IsOptional()
-  duration?: string; // ISO 8601 duration format (e.g., "PT2H30M")
+  duration?: string; 
 
   @IsObject()
   @IsOptional()
-  details?: Record<string, any>; // { flight_number: "DL123" }
+  details?: Record<string, any>; 
 }
 
 export class TransportRouteResponseDto {

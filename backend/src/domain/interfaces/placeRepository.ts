@@ -1,4 +1,4 @@
-// src/domain/interfaces/PlaceRepository.ts
+
 import { Place } from "../entities/Place";
 
 export interface PlaceRepository {

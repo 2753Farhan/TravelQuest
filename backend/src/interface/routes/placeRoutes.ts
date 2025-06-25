@@ -1,4 +1,3 @@
-// src/interface/routes/placeRoutes.ts
 import { Router } from "express";
 import { PlaceController } from "../controllers/placeController";
 import { KnexPlaceRepository } from "../../infrastructure/repositories/knexPlaceRepocitory";
