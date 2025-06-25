@@ -5,6 +5,7 @@ import { NotFoundError } from "../../interface/errors/NotFoundError";
 
 export class KnexTravelLogRepository implements TravelLogRepository {
   async create(log: Omit<TravelLog, 'logId' | 'createdAt'>): Promise<TravelLog> {
+    
     const [created] = await db('travel_logs')
       .insert({
         title: log.title,

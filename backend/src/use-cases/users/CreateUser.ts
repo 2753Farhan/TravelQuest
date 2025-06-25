@@ -6,7 +6,14 @@ export class CreateUser {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute(userData: CreateUserDto): Promise<UserEntity> {
-    const userEntity = new UserEntity(userData);
+    const { name, email } = userData;
+    const userEntity = new UserEntity(
+      "",
+      name,
+      email,
+      new Date(),
+      []
+    );
     return await this.userRepository.create(userEntity);
   }
 }

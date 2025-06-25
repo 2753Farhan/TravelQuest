@@ -57,8 +57,8 @@ export class KnexUserRepository implements UserRepository {
       });
 
       return Object.values(usersMap);
-    } catch (error) {
-      throw new BadRequestError("Failed to fetch Users");
+    } catch (error : any) {
+      throw new BadRequestError("Failed to fetch Users"+ error.message);
     }
   }
 
