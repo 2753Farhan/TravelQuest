@@ -1,3 +1,6 @@
+export enum RolePermissions {
+
+}
 export enum PlaceTypes {
   LODGING = 'lodging',
   DINING = 'dining',
@@ -22,6 +25,28 @@ export enum TripStatus {
   COMPLETED = 'completed',
   CANCELLED = 'cancelled'
 }
+
+
+export enum UserRoles {
+  ADMIN = 'admin',
+  MODERATOR = 'moderator',
+  TRAVELER = 'traveler',
+  EXPLORER = 'explorer'
+}
+
+export type JwtPayload = {
+  userId: string;
+  email: string;
+  role: UserRoles;
+  iat?: number;
+  exp?: number;
+};
+
+export enum TokenType {
+  ACCESS = 'access',
+  REFRESH = 'refresh'
+}
+
 
 export enum NotificationTypes {
   PROXIMITY = 'proximity',
@@ -52,3 +77,4 @@ export type TimeInterval = {
   hours: number;
   minutes: number;
 };
+

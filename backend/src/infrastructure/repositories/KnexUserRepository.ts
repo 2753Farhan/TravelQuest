@@ -1,79 +1,85 @@
 import { db } from "../database/knex/knexfile";
-import { User, UserEntity } from "../../domain/entities/User";
+import { User } from "../../domain/entities/User";
 import { UserRepository } from "../../domain/interfaces/UserRepository";
 import { BadRequestError } from "../../interface/errors/BadRequestError";
-import { PostEntity } from "../../domain/entities/Post";
+import { NotFoundError } from "../../interface/errors/NotFoundError";
 
 export class KnexUserRepository implements UserRepository {
-  async create(user: UserEntity): Promise<User> {
+  async create(user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User> {
+    console.log(user);
     try {
-      const [createdUser] = await db("users")
+      const [created] = await db('users')
         .insert({
-          id: user.id || db.raw("gen_random_uuid()"),
-          name: user.name,
+          username: user.username,
           email: user.email,
-          created_at: user.createdAt,
+          password_hash: user.password,
+          role: user.role,
+          profile_pic_url: user.profilePicUrl || null,
+          bio: user.bio,
+          is_verified: user.isVerified
         })
-        .returning("*");
-      return new UserEntity(createdUser.id, createdUser.name, createdUser.email, createdUser.created_at);
-    } catch (error) {
-      throw new BadRequestError("Failed to create User");
+        .returning('*');
+        console.log(created)
+
+      return User.fromRaw(created);
+    } catch (error: any) {
+      throw new BadRequestError(`Failed to create user: ${error.message}`);
     }
   }
 
-  async findAll(): Promise<User[]> {
-    try {
-      const results = await db("users")
-        .leftJoin("posts", "users.id", "posts.user_id")
-        .select(
-          "users.id as user_id", // Alias users.id to avoid conflict
-          "users.name",
-          "users.email",
-          "users.created_at",
-          "posts.id as post_id", // Alias posts.id
-          "posts.title",
-          "posts.content",
-          "posts.user_id as posts_user_id",
-          "posts.created_at as post_created_at"
-        );
-
-      const usersMap: { [key: string]: UserEntity } = {};
-      results.forEach(row => {
-        const userId = row.user_id; // Use the aliased users.id
-        let user = usersMap[userId];
-        if (!user) {
-          user = new UserEntity(userId, row.name, row.email, row.created_at);
-          usersMap[userId] = user;
-        }
-        if (row.post_id) { // Check if post data exists
-          user.posts.push(PostEntity.fromRaw({
-            id: row.post_id,
-            title: row.title,
-            content: row.content,
-            user_id: row.posts_user_id,
-            created_at: row.post_created_at
-          }));
-        }
-      });
-
-      return Object.values(usersMap);
-    } catch (error : any) {
-      throw new BadRequestError("Failed to fetch Users"+ error.message);
-    }
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await db('users').where('email', email).first();
+    return user ? User.fromRaw(user) : null;
   }
 
-  async findById(id: string): Promise<UserEntity> {
-    try {
-      const [user] = await db("users").where({ id }).select("*");
-      if (!user) throw new Error("User not found");
+  async findByUsername(username: string): Promise<User | null> {
+    const user = await db('users').where('username', username).first();
+    return user ? User.fromRaw(user) : null;
+  }
 
-      const posts = await db("posts").where({ user_id: id }).select("*");
-      const userEntity = new UserEntity(user.id, user.name, user.email, user.created_at);
-      userEntity.posts = posts.map(post => PostEntity.fromRaw(post));
+  async findById(id: string): Promise<User | null> {
+    const user = await db('users').where('id', id).first();
+    return user ? User.fromRaw(user) : null;
+  }
 
-      return userEntity;
-    } catch (error) {
-      throw new BadRequestError("Failed to fetch User");
+  async update(id: string, updates: Partial<User>): Promise<User> {
+    const updateData: any = { ...updates };
+    if (updates.updatedAt === undefined) {
+      updateData.updated_at = db.fn.now();
     }
+
+    const [updated] = await db('users')
+      .where('id', id)
+      .update(updateData)
+      .returning('*');
+
+    if (!updated) throw new NotFoundError('User not found');
+    return User.fromRaw(updated);
+  }
+
+  async delete(id: string): Promise<boolean> {
+    const deleted = await db('users').where('id', id).delete();
+    return deleted > 0;
+  }
+
+  async findAll(role?: string): Promise<User[]> {
+    let query = db('users');
+    if (role) {
+      query = query.where('role', role);
+    }
+    const users = await query;
+    return users.map(User.fromRaw);
+  }
+
+  async updateRefreshToken(id: string, refreshToken: string | null): Promise<void> {
+    await db('users')
+      .where('id', id)
+      .update({ refresh_token: refreshToken });
+  }
+
+  async verifyUser(id: string): Promise<void> {
+    await db('users')
+      .where('id', id)
+      .update({ is_verified: true });
   }
 }

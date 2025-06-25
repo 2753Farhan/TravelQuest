@@ -1,22 +1,32 @@
-import { PostEntity } from './Post';
-export class UserEntity {
+import { UserRoles } from "../../shared/types";
+export class User {
   constructor(
     public readonly id: string,
-    public name: string,
-    public email: string,
+    public readonly username: string,
+    public readonly email: string,
+    public password: string,
+    public readonly role: UserRoles,
+    public readonly profilePicUrl?: string,
+    public readonly bio?: string,
     public readonly createdAt: Date = new Date(),
-    public posts: PostEntity[] = [] // Add this line
+    public readonly updatedAt?: Date,
+    public readonly isVerified: boolean = false,
+    public readonly refreshToken?: string
   ) {}
 
-  static fromRaw(user: any): UserEntity {
-    return new UserEntity(user.id, user.name, user.email, user.created_at, []);
+  static fromRaw(raw: any): User {
+    return new User(
+      raw.id,
+      raw.username,
+      raw.email,
+      raw.password_hash,
+      raw.role,
+      raw.profile_pic_url,
+      raw.bio,
+      new Date(raw.created_at),
+      raw.updated_at ? new Date(raw.updated_at) : undefined,
+      raw.is_verified,
+      raw.refresh_token
+    );
   }
 }
-
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
-  posts: PostEntity[]; // Add this line
-};

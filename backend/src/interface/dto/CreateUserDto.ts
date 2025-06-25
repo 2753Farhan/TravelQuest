@@ -1,5 +1,5 @@
 import { IsString, IsEmail, MinLength, MaxLength } from "class-validator";
-import { UserEntity } from "../../domain/entities/User";
+import { User } from "../../domain/entities/User";
 import { PostResponseDto } from "./CreatePostDto";
 
 export class CreateUserDto {
@@ -21,7 +21,7 @@ export class UserResponseDto {
     public readonly posts: PostResponseDto[] = []
   ) {}
 
-  static fromDomain(user: UserEntity): UserResponseDto {
+  static fromDomain(user: User): UserResponseDto {
     return new UserResponseDto(
       user.id,
       user.name,
