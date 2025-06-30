@@ -1,9 +1,9 @@
 
-import { db } from "../database/knex/knexfile";
-import { Place } from "../../domain/entities/Place";
-import { PlaceRepository } from "../../domain/interfaces/placeRepository";
-import { BadRequestError } from "../../interface/errors/BadRequestError";
-import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { db } from "../database/knex/knexfile.ts";
+import { Place } from "../../domain/entities/Place.ts";
+import { PlaceRepository } from "../../domain/interfaces/placeRepository.ts";
+import { BadRequestError } from "../../interface/errors/BadRequestError.ts";
+import { NotFoundError } from "../../interface/errors/NotFoundError.ts";
 
 export class KnexPlaceRepository implements PlaceRepository {
   private selectColumns = [

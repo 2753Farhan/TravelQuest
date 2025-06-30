@@ -1,5 +1,5 @@
-import { TransportOption } from "../entities/TransportOption";
-import { TransportRoute } from "../entities/TransportRoute";
+import { TransportOption } from "../entities/TransportOption.ts";
+import { TransportRoute } from "../entities/TransportRoute.ts";
 
 export interface TransportRepository {
 

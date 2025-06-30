@@ -4,10 +4,11 @@ import { NotFoundError } from "../../interface/errors/NotFoundError";
 export class DeletePlace {
   constructor(private readonly placeRepository: PlaceRepository) {}
 
-  async execute(placeId: string): Promise<void> {
+  async execute(placeId: string): Promise<boolean> {
     const deleted = await this.placeRepository.delete(placeId);
     if (!deleted) {
       throw new NotFoundError("Place not found");
     }
+    return true
   }
 }

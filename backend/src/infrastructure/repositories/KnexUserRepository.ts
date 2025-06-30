@@ -1,12 +1,11 @@
-import { db } from "../database/knex/knexfile";
-import { User } from "../../domain/entities/User";
-import { UserRepository } from "../../domain/interfaces/UserRepository";
-import { BadRequestError } from "../../interface/errors/BadRequestError";
-import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { db } from "../database/knex/knexfile.ts";
+import { User } from "../../domain/entities/User.ts";
+import { UserRepository } from "../../domain/interfaces/UserRepository.ts";
+import { BadRequestError } from "../../interface/errors/BadRequestError.ts";
+import { NotFoundError } from "../../interface/errors/NotFoundError.ts";
 
 export class KnexUserRepository implements UserRepository {
   async create(user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User> {
-    console.log(user);
     try {
       const [created] = await db('users')
         .insert({
@@ -19,7 +18,6 @@ export class KnexUserRepository implements UserRepository {
           is_verified: user.isVerified
         })
         .returning('*');
-        console.log(created)
 
       return User.fromRaw(created);
     } catch (error: any) {

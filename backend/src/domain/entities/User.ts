@@ -1,4 +1,4 @@
-import { UserRoles } from "../../shared/types";
+import { UserRoles } from "../../shared/types.ts";
 export class User {
   constructor(
     public readonly id: string,

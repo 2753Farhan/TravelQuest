@@ -1,7 +1,7 @@
-import { db } from "../database/knex/knexfile";
-import { Post, PostEntity } from "../../domain/entities/Post";
-import { PostRepository } from "../../domain/interfaces/PostRepository";
-import { BadRequestError } from "../../interface/errors/BadRequestError";
+import { db } from "../database/knex/knexfile.ts";
+import { Post, PostEntity } from "../../domain/entities/Post.ts";
+import { PostRepository } from "../../domain/interfaces/PostRepository.ts";
+import { BadRequestError } from "../../interface/errors/BadRequestError.ts";
 
 export class KnexPostRepository implements PostRepository{
     async create(post: PostEntity): Promise<PostEntity> {

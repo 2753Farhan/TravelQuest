@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 
-import { CreateChat } from "../../use-cases/TravelDiscussion/CreateChat";
-import { GetGroupChats } from "../../use-cases/TravelDiscussion/GetGroupChats";
-import { GetChatThreads } from "../../use-cases/TravelDiscussion/GetCheatThreads";
-import { CreateChatDto,ChatResponseDto  } from "../dto/CreateChatDto";
-import { BadRequestError } from "../errors/BadRequestError";
-import { asyncHandler } from "../middlewares/asyncHandler";
+import { CreateChat } from "../../use-cases/TravelDiscussion/CreateChat.ts";
+import { GetGroupChats } from "../../use-cases/TravelDiscussion/GetGroupChats.ts";
+import { GetChatThreads } from "../../use-cases/TravelDiscussion/GetCheatThreads.ts";
+import { CreateChatDto,ChatResponseDto  } from "../dto/CreateChatDto.ts";
+import { BadRequestError } from "../errors/BadRequestError.ts";
+import { asyncHandler } from "../middlewares/asyncHandler.ts";
 
 export class ChatController {
   constructor(

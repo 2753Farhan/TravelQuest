@@ -1,5 +1,5 @@
 
-import { Chat } from "../entities/Chat";
+import { Chat } from "../entities/Chat.ts";
 
 export interface ChatRepository {
   create(chat: Omit<Chat, 'chatId' | 'createdAt'>): Promise<Chat>;

@@ -1,9 +1,9 @@
 
-import { db } from "../database/knex/knexfile";
-import { TransportOption } from "../../domain/entities/TransportOption";
-import { TransportRoute } from "../../domain/entities/TransportRoute";
-import { TransportRepository } from "../../domain/interfaces/transportRepository";
-import { BadRequestError } from "../../interface/errors/BadRequestError";
+import { db } from "../database/knex/knexfile.ts";
+import { TransportOption } from "../../domain/entities/TransportOption.ts";
+import { TransportRoute } from "../../domain/entities/TransportRoute.ts";
+import { TransportRepository } from "../../domain/interfaces/transportRepository.ts";
+import { BadRequestError } from "../../interface/errors/BadRequestError.ts";
 
 export class KnexTransportRepository implements TransportRepository {
 

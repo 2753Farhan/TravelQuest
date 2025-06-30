@@ -1,6 +1,6 @@
-import { db } from "../database/knex/knexfile";
-import { RefreshToken } from "../../domain/entities/RefreshToken";
-import { RefreshTokenRepository } from "../../domain/interfaces/RefreshTokenRepository";
+import { db } from "../database/knex/knexfile.ts";
+import { RefreshToken } from "../../domain/entities/RefreshToken.ts";
+import { RefreshTokenRepository } from "../../domain/interfaces/RefreshTokenRepository.ts";
 
 export class KnexRefreshTokenRepository implements RefreshTokenRepository {
   async create(token: Omit<RefreshToken, 'id' | 'createdAt'>): Promise<RefreshToken> {

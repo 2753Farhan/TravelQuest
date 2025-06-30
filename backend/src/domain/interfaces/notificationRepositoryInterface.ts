@@ -1,4 +1,4 @@
-import { Notification } from "../entities/Notification";
+import { Notification } from "../entities/Notification.ts";
 
 export interface NotificationRepository {
   create(notification: Omit<Notification, 'notificationId' | 'createdAt'>): Promise<Notification>;

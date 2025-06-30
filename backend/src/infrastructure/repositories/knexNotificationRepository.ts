@@ -1,7 +1,7 @@
-import { db } from "../database/knex/knexfile";
-import { Notification } from "../../domain/entities/Notification";
-import { NotificationRepository } from "../../domain/interfaces/notificationRepositoryInterface";
-import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { db } from "../database/knex/knexfile.ts";
+import { Notification } from "../../domain/entities/Notification.ts";
+import { NotificationRepository } from "../../domain/interfaces/notificationRepositoryInterface.ts";
+import { NotFoundError } from "../../interface/errors/NotFoundError.ts";
 
 export class KnexNotificationRepository implements NotificationRepository {
   async create(notification: Omit<Notification, 'notificationId' | 'createdAt'>): Promise<Notification> {

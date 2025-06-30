@@ -2,13 +2,13 @@
 import { Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
-import { CreateNotification } from "../../use-cases/notifications/CreateNotification";
-import { GetUserNotifications } from "../../use-cases/notifications/GetUserNotifications";
-import { MarkNotificationAsRead } from "../../use-cases/notifications/MarkNotificationAsRead";
-import { MarkAllAsRead } from "../../use-cases/notifications/MarkAllAsRead";
-import { CreateNotificationDto,NotificationResponseDto,MarkAsReadDto  } from "../dto/NotificationDto";
-import { BadRequestError } from "../errors/BadRequestError";
-import { asyncHandler } from "../middlewares/asyncHandler";
+import { CreateNotification } from "../../use-cases/notifications/CreateNotification.ts";
+import { GetUserNotifications } from "../../use-cases/notifications/GetUserNotifications.ts";
+import { MarkNotificationAsRead } from "../../use-cases/notifications/MarkNotificationAsRead.ts";
+import { MarkAllAsRead } from "../../use-cases/notifications/MarkAllAsRead.ts";
+import { CreateNotificationDto,NotificationResponseDto,MarkAsReadDto  } from "../dto/NotificationDto.ts";
+import { BadRequestError } from "../errors/BadRequestError.ts";
+import { asyncHandler } from "../middlewares/asyncHandler.ts";
 
 export class NotificationController {
   constructor(

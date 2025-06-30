@@ -1,7 +1,7 @@
-import { db } from "../database/knex/knexfile";
-import { Chat } from "../../domain/entities/Chat";
-import { ChatRepository } from "../../domain/interfaces/chatRepository";
-import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { db } from "../database/knex/knexfile.ts";
+import { Chat } from "../../domain/entities/Chat.ts";
+import { ChatRepository } from "../../domain/interfaces/chatRepository.ts";
+import { NotFoundError } from "../../interface/errors/NotFoundError.ts";
 
 export class KnexChatRepository implements ChatRepository {
   async create(chat: Omit<Chat, 'chatId' | 'createdAt'>): Promise<Chat> {

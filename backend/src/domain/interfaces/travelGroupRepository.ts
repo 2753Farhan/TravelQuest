@@ -1,4 +1,4 @@
-import { TravelGroup, TripMember, TripItem } from "../entities/TravelGroup";
+import { TravelGroup, TripMember, TripItem } from "../entities/TravelGroup.ts";
 
 export interface TravelGroupRepository {
   createGroup(group: Omit<TravelGroup, 'groupId' | 'createdAt'>): Promise<TravelGroup>;

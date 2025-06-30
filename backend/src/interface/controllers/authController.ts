@@ -15,16 +15,16 @@ declare global {
   }
 }
 import { validate } from "class-validator";
-import { RegisterUser } from "../../use-cases/auth/RegisterUser";
-import { LoginUser } from "../../use-cases/auth/LoginUser";
-import { RefreshToken } from "../../use-cases/auth/RefreshToken";
-import { RegisterUserDto, LoginUserDto, RefreshTokenDto } from "../dto/AuthDto";
-import { BadRequestError } from "../errors/BadRequestError";
-import { asyncHandler } from "../middlewares/asyncHandler";
-import { KnexUserRepository } from "../../infrastructure/repositories/KnexUserRepository";
-import { AuthService } from "../../domain/services/AuthService";
-import { EmailService } from "../../domain/services/EmailService";
-import { UserRoles } from "../../shared/types";
+import { RegisterUser } from "../../use-cases/auth/RegisterUser.ts";
+import { LoginUser } from "../../use-cases/auth/LoginUser.ts";
+import { RefreshToken } from "../../use-cases/auth/RefreshToken.ts";
+import { RegisterUserDto, LoginUserDto, RefreshTokenDto } from "../dto/AuthDto.ts";
+import { BadRequestError } from "../errors/BadRequestError.ts";
+import { asyncHandler } from "../middlewares/asyncHandler.ts";
+import { KnexUserRepository } from "../../infrastructure/repositories/KnexUserRepository.ts";
+import { AuthService } from "../../domain/services/AuthService.ts";
+import { EmailService } from "../../domain/services/EmailService.ts";
+import { UserRoles } from "../../shared/types.ts";
 export class AuthController {
   private registerUser: RegisterUser;
   private loginUser: LoginUser;

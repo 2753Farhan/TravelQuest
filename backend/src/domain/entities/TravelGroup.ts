@@ -1,5 +1,5 @@
 
-import { TripStatus } from "../../shared/types";
+import { TripStatus } from "../../shared/types.ts";
 
 export class TravelGroup {
   constructor(

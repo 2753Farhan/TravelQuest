@@ -11,7 +11,9 @@ export class RegisterUser {
     private readonly emailService: EmailService
   ) {}
 
-  async execute(dto: RegisterUserDto): Promise<{ message: string }> {
+  async execute(dto: RegisterUserDto): Promise<{
+      user: any; message: string 
+}> {
     const existingUser = await this.userRepository.findByEmail(dto.email);
     if (existingUser) {
       throw new BadRequestError('Email already in use');
@@ -23,11 +25,9 @@ export class RegisterUser {
     }
 
     const user = await this.authService.register(dto);
-    console.log(user);
 
     
     const verificationToken = this.authService.generateVerificationToken(user.id);
-    console.log(verificationToken);
     await this.emailService.sendVerificationEmail(user.email, verificationToken);
 
     return { message: 'User registered successfully. Please check your email to verify your account.' };

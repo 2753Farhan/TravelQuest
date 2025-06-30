@@ -1,4 +1,4 @@
-import { TravelLog } from "../entities/TravelLog";
+import { TravelLog } from "../entities/TravelLog.ts";
 
 export interface TravelLogRepository {
   create(log: Omit<TravelLog, 'logId' | 'createdAt'>): Promise<TravelLog>;

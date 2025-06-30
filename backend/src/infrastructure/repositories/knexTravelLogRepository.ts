@@ -1,7 +1,7 @@
-import { db } from "../database/knex/knexfile";
-import { TravelLog } from "../../domain/entities/TravelLog";
-import { TravelLogRepository } from "../../domain/interfaces/travelLogRepository";
-import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { db } from "../database/knex/knexfile.ts";
+import { TravelLog } from "../../domain/entities/TravelLog.ts";
+import { TravelLogRepository } from "../../domain/interfaces/travelLogRepository.ts";
+import { NotFoundError } from "../../interface/errors/NotFoundError.ts";
 
 export class KnexTravelLogRepository implements TravelLogRepository {
   async create(log: Omit<TravelLog, 'logId' | 'createdAt'>): Promise<TravelLog> {

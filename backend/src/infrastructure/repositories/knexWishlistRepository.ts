@@ -1,7 +1,7 @@
-import { db } from "../database/knex/knexfile";
-import { Wishlist, WishlistItem } from "../../domain/entities/Wishlist";
-import { WishlistRepository } from "../../domain/interfaces/wishListRepository";
-import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { db } from "../database/knex/knexfile.ts";
+import { Wishlist, WishlistItem } from "../../domain/entities/Wishlist.ts";
+import { WishlistRepository } from "../../domain/interfaces/wishListRepository.ts";
+import { NotFoundError } from "../../interface/errors/NotFoundError.ts";
 
 export class KnexWishlistRepository implements WishlistRepository {
   async create(wishlist: Omit<Wishlist, 'wishlistId' | 'createdAt'>): Promise<Wishlist> {

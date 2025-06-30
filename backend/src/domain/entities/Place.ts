@@ -1,4 +1,4 @@
-import { PlaceTypes } from "../../shared/types";
+import { PlaceTypes } from "../../shared/types.js";
 export class Place {
   constructor(
     public readonly place_id: string,

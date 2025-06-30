@@ -1,7 +1,7 @@
-import { NotFoundError } from "../../interface/errors/NotFoundError";
-import { db } from "../database/knex/knexfile";
-import { LogEntry } from "../../domain/entities/LogEntry";
-import { LogEntryRepository } from "../../domain/interfaces/logEntryRepository";
+import { NotFoundError } from "../../interface/errors/NotFoundError.ts";
+import { db } from "../database/knex/knexfile.ts";
+import { LogEntry } from "../../domain/entities/LogEntry.ts";
+import { LogEntryRepository } from "../../domain/interfaces/logEntryRepository.ts";
 export class knexLogEntryRepository implements LogEntryRepository {
 
          async validateReference(placeId?: string, transportRouteId?: string) : Promise<void>{

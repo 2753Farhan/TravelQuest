@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PlaceController } from "../controllers/placeController";
-import { KnexPlaceRepository } from "../../infrastructure/repositories/knexPlaceRepocitory";
+import { KnexPlaceRepository } from "../../infrastructure/repositories/knexPlaceRepository";
 import { CreatePlace } from "../../use-cases/places/CreatePlace";
 import { GetPlaceById } from "../../use-cases/places/GetPlaceById";
 import { GetPlaces } from "../../use-cases/places/GetPlaces";

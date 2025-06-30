@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
-import { CreateLogEntry } from "../../use-cases/LogEntries/CreateLogEntry";
-import { GetLogEntries } from "../../use-cases/LogEntries/GetLogEntries";
-import { GetLogEntry } from "../../use-cases/LogEntries/GetLogEntry";
-import { CreateLogEntryDto, LogEntryResponseDto } from "../dto/CreateLogEntryDto";
-import { BadRequestError } from "../errors/BadRequestError";
+import { CreateLogEntry } from "../../use-cases/LogEntries/CreateLogEntry.ts";
+import { GetLogEntries } from "../../use-cases/LogEntries/GetLogEntries.ts";
+import { GetLogEntry } from "../../use-cases/LogEntries/GetLogEntry.ts";
+import { CreateLogEntryDto, LogEntryResponseDto } from "../dto/CreateLogEntryDto.ts";
+import { BadRequestError } from "../errors/BadRequestError.ts";
 
 export class LogEntryController {
   constructor(

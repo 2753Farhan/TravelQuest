@@ -1,5 +1,5 @@
-import { User } from "../entities/User";
-import { UserRoles } from "../../shared/types";
+import { User } from "../entities/User.ts";
+import { UserRoles } from "../../shared/types.ts";
 
 export interface UserRepository {
   create(user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User>;

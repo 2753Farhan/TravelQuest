@@ -1,7 +1,7 @@
-import { db } from "../database/knex/knexfile";
-import { TravelGroup, TripMember, TripItem } from "../../domain/entities/TravelGroup";
-import { TravelGroupRepository } from "../../domain/interfaces/travelGroupRepository";
-import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { db } from "../database/knex/knexfile.ts";
+import { TravelGroup, TripMember, TripItem } from "../../domain/entities/TravelGroup.ts";
+import { TravelGroupRepository } from "../../domain/interfaces/travelGroupRepository.ts";
+import { NotFoundError } from "../../interface/errors/NotFoundError.ts";
 
 export class KnexTravelGroupRepository implements TravelGroupRepository {
 async createGroup(group: Omit<TravelGroup, 'groupId' | 'createdAt'>): Promise<TravelGroup> {

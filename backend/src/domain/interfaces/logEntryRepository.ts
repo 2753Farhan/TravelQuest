@@ -1,4 +1,4 @@
-import { LogEntry } from "../entities/LogEntry";
+import { LogEntry } from "../entities/LogEntry.ts";
 
 export interface LogEntryRepository {
     create(logEntry: Omit<LogEntry, "entryId" | "created_at" | "updated_at">): Promise<LogEntry>;

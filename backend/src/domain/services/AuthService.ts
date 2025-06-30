@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { UserRepository } from "../interfaces/UserRepository";
-import { User } from "../entities/User";
-import { BadRequestError } from "../../interface/errors/BadRequestError";
-import { UnauthorizedError } from "../../interface/errors/UnauthorizedError";
-import { env } from '../../shared/config/env';
-import { UserRoles } from '../../shared/types';
+import { UserRepository } from "../interfaces/UserRepository.ts";
+import { User } from "../entities/User.ts";
+import { BadRequestError } from "../../interface/errors/BadRequestError.ts";
+import { UnauthorizedError } from "../../interface/errors/UnauthorizedError.ts";
+import { env } from '../../shared/config/env.ts';
+import { UserRoles } from '../../shared/types.ts';
 
 export class AuthService {
   constructor(public readonly userRepository: UserRepository) {}
@@ -63,7 +63,6 @@ export class AuthService {
   }
 
   generateVerificationToken(userId: string): string {
-    console.log("from generate verification"+env.JWT_SECRET)
     return jwt.sign(
       { userId },
       env.JWT_SECRET,
@@ -104,9 +103,7 @@ export class AuthService {
 
   async verifyEmail(token: string): Promise<void> {
     try {
-      console.log("from verify email"+ env.JWT_SECRET);
       const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
-      console.log(payload)
       await this.userRepository.verifyUser(payload.userId);
     } catch (error) {
       throw new UnauthorizedError('Invalid verification token');

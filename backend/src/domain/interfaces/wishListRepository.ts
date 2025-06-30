@@ -1,4 +1,4 @@
-import { Wishlist, WishlistItem } from "../entities/Wishlist";
+import { Wishlist, WishlistItem } from "../entities/Wishlist.ts";
 
 export interface WishlistRepository {
   create(wishlist: Omit<Wishlist, 'wishlistId' | 'createdAt'>): Promise<Wishlist>;
