@@ -17,8 +17,8 @@ export class knexLogEntryRepository implements LogEntryRepository {
 
             if(transportRouteId){
                 const transportRouteExists = await db('transport_routes')
-                .where('transport_route_id', transportRouteId)
-                .first('transport_route_id');
+                .where('route_id', transportRouteId)
+                .first('route_id');
 
                 if(!transportRouteExists){
                     throw new NotFoundError(`Transport Route with ID ${transportRouteId} does not exist`);

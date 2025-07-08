@@ -49,4 +49,19 @@ export class UserController {
     const users = await this.getAllUsers.execute();
     res.json(users);
   };
+
+
+  getUserById = async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    if (!userId) {
+      throw new BadRequestError("User ID is required");
+    }
+
+    const user = await this.getCurrentUser.execute(userId);
+    if (!user) {
+      throw new BadRequestError("User not found");
+    }
+
+    res.json(user);
+  }
 }

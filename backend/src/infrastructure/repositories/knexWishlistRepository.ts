@@ -2,6 +2,7 @@ import { db } from "../database/knex/knexfile";
 import { Wishlist, WishlistItem } from "../../domain/entities/Wishlist";
 import { WishlistRepository } from "../../domain/interfaces/wishListRepository";
 import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { raw } from "express";
 
 export class KnexWishlistRepository implements WishlistRepository {
   async create(wishlist: Omit<Wishlist, 'wishlistId' | 'createdAt'>): Promise<Wishlist> {
@@ -120,82 +121,129 @@ async findOverlappingWishlists(
   userId: string,
   wishlistId?: string
 ): Promise<{ wishlist: Wishlist; commonItems: WishlistItem[] }[]> {
-  const userPlacesSubquery = db('wishlist_items')
-    .select('place_id')
-    .where('place_id', 'is not', null)
-    .whereExists(
-      db('wishlists')
-        .select('*')
-        .whereRaw('wishlists.wishlist_id = wishlist_items.wishlist_id')
-        .where('wishlists.user_id', userId)
-    )
-    .where('is_active', true);
+  try {
+    const userPlacesSubquery = db('wishlist_items')
+      .select('place_id')
+      .where('place_id', 'is not', null)
+      .whereExists(
+        db('wishlists')
+          .select('*')
+          .whereRaw('wishlists.wishlist_id = wishlist_items.wishlist_id')
+          .where('wishlists.user_id', userId)
+      )
+      .where('is_active', true);
 
-  if (wishlistId) {
-    userPlacesSubquery.where('wishlist_id', wishlistId);
-  }
-
-
-  const overlapping = await db('wishlist_items as wi')
-    .join('wishlists as w', 'wi.wishlist_id', 'w.wishlist_id')
-    .join('places as p', 'wi.place_id', 'p.place_id')
-    .select(
-      'w.*',
-      'wi.item_id',
-      'wi.wishlist_id as item_wishlist_id',
-      'wi.place_id',
-      'wi.priority',
-      'wi.target_season',
-      'wi.notification_radius',
-      'wi.is_active',
-      'wi.details',
-      'wi.created_at as item_created_at',
-      'wi.updated_at as item_updated_at',
-      'p.name as place_name',
-      'p.type as place_type',
-      db.raw('ST_X(p.geo_coordinates::geometry) as place_x'),
-      db.raw('ST_Y(p.geo_coordinates::geometry) as place_y')
-    )
-    .where('wi.place_id', 'in', userPlacesSubquery)
-    .where('w.user_id', '!=', userId) 
-    .where('wi.is_active', true)
-    .where(function () {
-      this.where('w.visibility', 'public').orWhere('w.visibility', 'friends_only');
-    });
-
-
-  const grouped = overlapping.reduce((acc, row) => {
-    const wishlist = Wishlist.fromRaw({
-      wishlist_id: row.wishlist_id,
-      user_id: row.user_id,
-      title: row.title,
-      visibility: row.visibility,
-      created_at: row.created_at,
-      updated_at: row.updated_at
-    });
-
-    const item = WishlistItem.fromRaw({
-      item_id: row.item_id,
-      wishlist_id: row.item_wishlist_id,
-      place_id: row.place_id,
-      priority: row.priority,
-      target_season: row.target_season,
-      notification_radius: row.notification_radius,
-      is_active: row.is_active,
-      details: row.details,
-      created_at: row.item_created_at,
-      updated_at: row.item_updated_at
-    });
-
-    const existing = acc.find((entry: { wishlist: { wishlistId: string; }; }) => entry.wishlist.wishlistId === wishlist.wishlistId);
-    if (existing) {
-      existing.commonItems.push(item);
-    } else {
-      acc.push({ wishlist, commonItems: [item] });
+    if (wishlistId) {
+      userPlacesSubquery.where('wishlist_id', wishlistId);
+      console.log(`Filtering by wishlistId: ${wishlistId}`);
     }
-    return acc;
-  }, [] as { wishlist: Wishlist; commonItems: WishlistItem[] }[]);
 
-  return grouped;
+    const overlapping = await db('wishlist_items as wi')
+      .join('wishlists as w', 'wi.wishlist_id', 'w.wishlist_id')
+      .leftJoin('users as u', 'w.user_id', 'u.id')
+      .leftJoin('places as p', 'wi.place_id', 'p.place_id')
+      .select(
+        'w.wishlist_id',
+        'w.user_id',
+        'w.title',
+        'w.visibility',
+        'w.created_at',
+        'w.updated_at',
+        'u.username',
+        'wi.item_id',
+        'wi.wishlist_id as item_wishlist_id',
+        'wi.place_id',
+        'wi.priority',
+        'wi.target_season',
+        'wi.notification_radius',
+        'wi.is_active',
+        'wi.details',
+        'wi.created_at as item_created_at',
+        'wi.updated_at as item_updated_at',
+        'p.name as place_name',
+        'p.type as place_type',
+        db.raw('ST_X(p.geo_coordinates::geometry) as place_x'),
+        db.raw('ST_Y(p.geo_coordinates::geometry) as place_y')
+      )
+      .where('wi.place_id', 'in', userPlacesSubquery)
+      .where('w.user_id', '!=', userId)
+      .where('wi.is_active', true)
+      .where('w.visibility', 'public')
+      .limit(100);
+
+    console.log("Raw overlapping data count:", overlapping.length);
+    overlapping.forEach((row, index) => {
+      console.log(`Row ${index}:`, {
+        wishlistId: row.wishlist_id,
+        userId: row.user_id,
+        username: row.username,
+        itemId: row.item_id,
+        placeId: row.place_id,
+        placeName: row.place_name,
+      });
+    });
+
+    const grouped = overlapping.reduce((acc, row) => {
+      console.log("Wishlist fromRaw input:", {
+        wishlist_id: row.wishlist_id,
+        user_id: row.user_id,
+        title: row.title,
+        visibility: row.visibility,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        username: row.username || `User ${row.user_id}`,
+      });
+      const wishlist = Wishlist.fromRaw({
+        wishlist_id: row.wishlist_id,
+        user_id: row.user_id,
+        title: row.title,
+        visibility: row.visibility,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        username: row.username || `User ${row.user_id}`,
+      });
+
+      console.log("WishlistItem fromRaw input:", {
+        item_id: row.item_id,
+        wishlist_id: row.item_wishlist_id,
+        place_id: row.place_id,
+        priority: row.priority,
+        target_season: row.target_season,
+        notification_radius: row.notification_radius,
+        is_active: row.is_active,
+        details: row.details,
+        created_at: row.item_created_at,
+        updated_at: row.item_updated_at,
+        place_name: row.place_name || 'Unknown Place',
+      });
+      const item = WishlistItem.fromRaw({
+        item_id: row.item_id,
+        wishlist_id: row.item_wishlist_id,
+        place_id: row.place_id,
+        priority: row.priority,
+        target_season: row.target_season,
+        notification_radius: row.notification_radius,
+        is_active: row.is_active,
+        details: row.details,
+        created_at: row.item_created_at,
+        updated_at: row.item_updated_at,
+        place_name: row.place_name || 'Unknown Place',
+      });
+
+      const existing = acc.find((entry: { wishlist: { wishlistId: string; }; }) => entry.wishlist.wishlistId === wishlist.wishlistId);
+      if (existing) {
+        existing.commonItems.push(item);
+      } else {
+        acc.push({ wishlist, commonItems: [item] });
+      }
+      return acc;
+    }, [] as { wishlist: Wishlist; commonItems: WishlistItem[] }[]);
+
+    console.log("Grouped overlapping wishlists:", grouped);
+    return grouped;
+  } catch (error) {
+    console.error("Error fetching overlapping wishlists:", error);
+    throw error;
+  }
 }
 }

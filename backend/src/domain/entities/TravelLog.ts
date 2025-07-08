@@ -1,4 +1,4 @@
-type VisibilitySettings = 'public' | 'private' | 'friends';
+type VisibilitySettings = 'public' | 'private' | 'friends_only';
 type TripStatus = 'planning' | 'active' | 'completed' | 'cancelled';
 
 export class TravelLog {
@@ -7,12 +7,11 @@ export class TravelLog {
     public readonly title: string,
     public readonly description: string,
     public readonly creatorId: string,
-    public readonly startDate?: Date,
-    public readonly endDate?: Date,
+    public readonly start_date?: Date,
+    public readonly end_date?: Date,
     public readonly visibility: VisibilitySettings = 'public',
     public readonly status: TripStatus = 'planning',
     public readonly createdAt: Date = new Date(),
-    public readonly updatedAt?: Date
   ) {}
 
   static fromRaw(raw: any): TravelLog {
@@ -26,7 +25,6 @@ export class TravelLog {
       raw.visibility,
       raw.status,
       new Date(raw.created_at),
-      raw.updated_at ? new Date(raw.updated_at) : undefined
     );
   }
 }

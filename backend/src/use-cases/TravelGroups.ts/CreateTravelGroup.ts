@@ -10,8 +10,8 @@ export class CreateTravelGroup {
     return this.repository.createGroup({
       creatorId: dto.creatorId,
       title: dto.title,
-      startDate: dto.startDate ? new Date(dto.startDate) : undefined,
-      endDate: dto.endDate ? new Date(dto.endDate) : undefined,
+      start_date: dto.start_date ? new Date(dto.start_date) : undefined,
+      end_date: dto.end_date ? new Date(dto.end_date) : undefined,
       status: dto.status || TripStatus.PLANNING
     });
   }

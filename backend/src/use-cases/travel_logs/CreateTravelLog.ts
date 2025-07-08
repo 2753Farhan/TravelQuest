@@ -11,8 +11,8 @@ export class CreateTravelLog {
       logData.title,
       logData.description,
       logData.creatorId,
-      logData.startDate ? new Date(logData.startDate) : undefined,
-      logData.endDate ? new Date(logData.endDate) : undefined,
+      logData.start_date ? new Date(logData.start_date) : undefined,
+      logData.end_date ? new Date(logData.end_date) : undefined,
       logData.visibility || 'public',
       logData.status || 'planning'
     );

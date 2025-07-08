@@ -5,7 +5,8 @@ import { NotFoundError } from "../../interface/errors/NotFoundError";
 
 export class KnexChatRepository implements ChatRepository {
   async create(chat: Omit<Chat, 'chatId' | 'createdAt'>): Promise<Chat> {
-    const [created] = await db('chats')
+    console.log(chat);
+     const [created] = await db('chats')
       .insert({
         type: chat.type,
         parent_id: chat.parentId,

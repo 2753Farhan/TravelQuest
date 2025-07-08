@@ -1,5 +1,5 @@
 import { IsString, IsUUID, IsOptional, IsEnum, IsDateString, MinLength, MaxLength } from "class-validator";
-type VisibilitySettings = 'public' | 'private' | 'friends';
+type VisibilitySettings = 'public' | 'private' | 'friends_only';
 type TripStatus = 'planning' | 'active' | 'completed' | 'cancelled';
 import { TravelLog } from "../../domain/entities/TravelLog";
 
@@ -18,11 +18,11 @@ export class CreateTravelLogDto {
 
   @IsDateString()
   @IsOptional()
-  startDate?: string;
+  start_date?: string;
 
   @IsDateString()
   @IsOptional()
-  endDate?: string;
+  end_date?: string;
 
   @IsEnum(['public', 'private', 'friends_only'])
   @IsOptional()
@@ -39,8 +39,8 @@ export class TravelLogResponseDto {
     public readonly title: string,
     public readonly description: string,
     public readonly creatorId: string,
-    public readonly startDate?: Date,
-    public readonly endDate?: Date,
+    public readonly start_date?: Date,
+    public readonly end_date?: Date,
     public readonly visibility: VisibilitySettings = 'public',
     public readonly status: TripStatus = 'planning',
     public readonly createdAt: Date = new Date(),
@@ -53,12 +53,11 @@ export class TravelLogResponseDto {
       log.title,
       log.description,
       log.creatorId,
-      log.startDate,
-      log.endDate,
+      log.start_date,
+      log.end_date,
       log.visibility,
       log.status,
       log.createdAt,
-      log.updatedAt
     );
   }
 }

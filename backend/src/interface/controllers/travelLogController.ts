@@ -7,6 +7,7 @@ import { GetTravelLog } from "../../use-cases/travel_logs/GetTravelLog";
 import { GetTravelLogsByUser } from "../../use-cases/travel_logs/GetTravelLogsByUser";
 import { UpdateTravelLog } from "../../use-cases/travel_logs/UpdateTravelLog";
 import { DeleteTravelLog } from "../../use-cases/travel_logs/DeleteTravelLog";
+import { UpdateTravelLogDto } from "../dto/UpdateTravelLogDto";
 
 import { BadRequestError } from "../errors/BadRequestError";
 
@@ -48,9 +49,9 @@ export class TravelLogController {
     res.json(travelLogs.map(TravelLogResponseDto.fromDomain));
   }
 
-  async update(req: Request, res: Response): Promise<void> {
+async update(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
-    const dto = plainToInstance(CreateTravelLogDto, req.body);
+    const dto = plainToInstance(UpdateTravelLogDto, req.body);
 
     const errors = await validate(dto);
     if (errors.length > 0) {
@@ -62,14 +63,13 @@ export class TravelLogController {
 
     const updates = {
       ...dto,
-      startDate: dto.startDate ? new Date(dto.startDate) : undefined,
-      endDate: dto.endDate ? new Date(dto.endDate) : undefined,
+      start_date: dto.start_date ? new Date(dto.start_date) : undefined,
+      end_date: dto.end_date ? new Date(dto.end_date) : undefined,
     };
 
     const updatedLog = await this.updateTravelLog.execute(id, updates);
     res.json(TravelLogResponseDto.fromDomain(updatedLog));
-  }
-
+}
   async delete(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     await this.deleteTravelLog.execute(id);

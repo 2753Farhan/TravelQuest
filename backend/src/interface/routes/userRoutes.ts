@@ -11,7 +11,9 @@ const controller = new UserController();
 router.get("/me", authMiddleware, asyncHandler(controller.getCurrent.bind(controller)));
 router.patch("/me", authMiddleware, asyncHandler(controller.update.bind(controller)));
 
-
+router.get('/:id', 
+   asyncHandler(controller.getUserById.bind(controller))
+)
 router.get("/", 
   authMiddleware, 
   roleMiddleware([UserRoles.ADMIN, UserRoles.MODERATOR]), 

@@ -14,8 +14,8 @@ async createGroup(group: Omit<TravelGroup, 'groupId' | 'createdAt'>): Promise<Tr
       .insert({
         creator_id: group.creatorId,
         title: group.title,
-        start_date: group.startDate,
-        end_date: group.endDate,
+        start_date: group.start_date,
+        end_date: group.end_date,
         status: group.status
       })
       .returning('*');
@@ -182,7 +182,9 @@ async addMember(member: Omit<TripMember, 'membershipId'|'invitationStatus'>): Pr
   async findMembersByGroup(groupId: string): Promise<TripMember[]> {
     const members = await db('trip_members')
       .where('trip_id', groupId)
+      .andWhere('invitation_status', 'accepted')  // Only include accepted members
       .select('*');
+  
     return members.map(TripMember.fromRaw);
   }
 
@@ -241,7 +243,7 @@ async addMember(member: Omit<TripMember, 'membershipId'|'invitationStatus'>): Pr
     const items = await db('trip_items')
       .where('group_id', groupId)
       .select('*');
-    return items.map(TripItem.fromRaw);
+    return items;
   }
 
   async updateItem(itemId: string, updates: Partial<TripItem>): Promise<TripItem> {

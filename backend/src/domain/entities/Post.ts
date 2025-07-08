@@ -10,7 +10,7 @@ export class PostEntity {
   ) {}
 
   static fromRaw(post: any): PostEntity {
-    return new PostEntity(post.id, post.title, post.content, post.startDate, post.endDate, post.user_id, post.created_at);
+    return new PostEntity(post.id, post.title, post.content, post.start_date, post.end_date, post.user_id, post.created_at);
   }
 }
 
@@ -19,8 +19,8 @@ export type Post = {
   id: string;
   title: string;
   content: string;
-  startDate: Date;
-  endDate: Date;
+  start_date: Date;
+  end_date: Date;
   userId: string;
   createdAt: Date;
 };
