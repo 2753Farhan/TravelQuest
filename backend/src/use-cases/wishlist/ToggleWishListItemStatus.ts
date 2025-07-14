@@ -1,4 +1,4 @@
-import { WishlistRepository } from "../../domain/interfaces/wishListRepository";
+import { WishlistRepository } from "../../domain/interfaces/WishListRepository";
 import { NotFoundError } from "../../interface/errors/NotFoundError";
 export class ToggleWishlistItemStatus {
   constructor(private readonly repository: WishlistRepository) {}

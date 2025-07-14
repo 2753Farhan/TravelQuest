@@ -44,11 +44,30 @@ export class PlaceController {
     res.json(PlaceResponseDto.fromDomain(place));
   }
 
-  async getAll(_req: Request, res: Response): Promise<void> {
-    const places = await this.getPlaces.execute();
-    res.json(places.map(PlaceResponseDto.fromDomain));
+// In your PlaceController.ts
+async getAll(req: Request, res: Response): Promise<void> {
+  // Only use pagination if either parameter is provided
+  const usePagination = req.query.page || req.query.limit;
+  
+  if (usePagination) {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    
+    const result = await this.getPlaces.execute({ page, limit });
+    
+    if (typeof result === 'object' && 'meta' in result) {
+      res.json({
+        data: result.data.map(PlaceResponseDto.fromDomain),
+        meta: result.meta
+      });
+      return;
+    }
   }
-
+  
+  // No pagination - return plain array
+  const places = await this.getPlaces.execute();
+  res.json(Array.isArray(places) ? places.map(PlaceResponseDto.fromDomain) : []);
+}
   async getByType(req: Request, res: Response): Promise<void> {
     const places = await this.findPlacesByType.execute(req.params.type);
     res.json(places.map(PlaceResponseDto.fromDomain));

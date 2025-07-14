@@ -1,6 +1,6 @@
 import { db } from "../database/knex/knexfile";
 import { Wishlist, WishlistItem } from "../../domain/entities/Wishlist";
-import { WishlistRepository } from "../../domain/interfaces/wishListRepository";
+import { WishlistRepository } from "../../domain/interfaces/WishListRepository";
 import { NotFoundError } from "../../interface/errors/NotFoundError";
 import { raw } from "express";
 
@@ -135,7 +135,6 @@ async findOverlappingWishlists(
 
     if (wishlistId) {
       userPlacesSubquery.where('wishlist_id', wishlistId);
-      console.log(`Filtering by wishlistId: ${wishlistId}`);
     }
 
     const overlapping = await db('wishlist_items as wi')
@@ -171,28 +170,10 @@ async findOverlappingWishlists(
       .where('w.visibility', 'public')
       .limit(100);
 
-    console.log("Raw overlapping data count:", overlapping.length);
-    overlapping.forEach((row, index) => {
-      console.log(`Row ${index}:`, {
-        wishlistId: row.wishlist_id,
-        userId: row.user_id,
-        username: row.username,
-        itemId: row.item_id,
-        placeId: row.place_id,
-        placeName: row.place_name,
-      });
-    });
+  
 
     const grouped = overlapping.reduce((acc, row) => {
-      console.log("Wishlist fromRaw input:", {
-        wishlist_id: row.wishlist_id,
-        user_id: row.user_id,
-        title: row.title,
-        visibility: row.visibility,
-        created_at: row.created_at,
-        updated_at: row.updated_at,
-        username: row.username || `User ${row.user_id}`,
-      });
+      
       const wishlist = Wishlist.fromRaw({
         wishlist_id: row.wishlist_id,
         user_id: row.user_id,
@@ -203,19 +184,6 @@ async findOverlappingWishlists(
         username: row.username || `User ${row.user_id}`,
       });
 
-      console.log("WishlistItem fromRaw input:", {
-        item_id: row.item_id,
-        wishlist_id: row.item_wishlist_id,
-        place_id: row.place_id,
-        priority: row.priority,
-        target_season: row.target_season,
-        notification_radius: row.notification_radius,
-        is_active: row.is_active,
-        details: row.details,
-        created_at: row.item_created_at,
-        updated_at: row.item_updated_at,
-        place_name: row.place_name || 'Unknown Place',
-      });
       const item = WishlistItem.fromRaw({
         item_id: row.item_id,
         wishlist_id: row.item_wishlist_id,
@@ -239,7 +207,6 @@ async findOverlappingWishlists(
       return acc;
     }, [] as { wishlist: Wishlist; commonItems: WishlistItem[] }[]);
 
-    console.log("Grouped overlapping wishlists:", grouped);
     return grouped;
   } catch (error) {
     console.error("Error fetching overlapping wishlists:", error);

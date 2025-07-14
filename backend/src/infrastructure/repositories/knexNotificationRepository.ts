@@ -3,6 +3,7 @@ import { Notification } from "../../domain/entities/Notification";
 import { NotificationRepository } from "../../domain/interfaces/notificationRepositoryInterface";
 import { NotFoundError } from "../../interface/errors/NotFoundError";
 
+
 export class KnexNotificationRepository implements NotificationRepository {
   async create(notification: Omit<Notification, 'notificationId' | 'createdAt'>): Promise<Notification> {
     const [created] = await db('notifications')

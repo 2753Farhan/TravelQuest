@@ -9,7 +9,8 @@ export class UpdateUser {
   async execute(userId: string, dto: UpdateUserDto): Promise<UserResponseDto> {
     const updates = {
       profilePicUrl: dto.profilePicUrl,
-      bio: dto.bio
+      bio: dto.bio,
+      role: dto.role
     };
 
     const updatedUser = await this.userRepository.update(userId, updates);

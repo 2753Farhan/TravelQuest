@@ -5,7 +5,7 @@ export class PostEntity {
     public readonly content: string,
     public readonly startedAt: Date ,
     public readonly endAt: Date,
-    public readonly userId: string, // Confirm this is userId
+    public readonly userId: string, 
     public readonly createdAt: Date = new Date()
   ) {}
 

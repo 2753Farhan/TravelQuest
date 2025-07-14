@@ -4,8 +4,8 @@ import { TravelGroupRepository } from "../../domain/interfaces/travelGroupReposi
 export class GetTripItemByID {
   constructor(private readonly repository: TravelGroupRepository) {}
 
-  async execute(itemId: string): Promise<TripItem> {
-    const item = await this.repository.findItemById(itemId);
+  async execute(itemId: string): Promise<any> {
+    const item = await this.repository.findExtendedItemById(itemId);
     if (!item) throw new NotFoundError("Item not found");
     return item;
   }

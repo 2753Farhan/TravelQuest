@@ -123,7 +123,6 @@ export class WishlistController {
   })
 
 findOverlappingWishlists = asyncHandler(async (req: Request, res: Response) => {
-    console.log(req.params.userId + "  " + req.query.wishlistId);
     const dto = plainToInstance(FindOverlappingWishlistsDto, {
       userId: req.params.userId,
       wishlistId: req.query.wishlistId
@@ -132,9 +131,8 @@ findOverlappingWishlists = asyncHandler(async (req: Request, res: Response) => {
     if (errors.length > 0) {
       throw new BadRequestError(errors.toString());
     }
-    console.log('this is the dto bro: '+ dto);
+    ('this is the dto bro: '+ dto);
     const overlaps = await this.findOverlappingWishlistsUseCase.execute(dto);
-    console.log("Overlapping wishlists found: ", overlaps);
     res.json(
       overlaps.map(({ wishlist, commonItems }) => ({
         wishlist: wishlist,

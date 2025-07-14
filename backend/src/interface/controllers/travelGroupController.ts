@@ -14,6 +14,7 @@ import { GetTripItemByID } from "../../use-cases/TravelGroups.ts/GetTripItemByID
 import { UpdateTriptItem } from "../../use-cases/TravelGroups.ts/UpdateTripItem";
 import { DeleteTripItem } from "../../use-cases/TravelGroups.ts/DeleteTripItem";
 import { GetTripMembersByGroup } from "../../use-cases/TravelGroups.ts/GetTripMembersByGroup";
+import { findProximityItems } from "../../use-cases/TravelGroups.ts/FindProximityItems";
 import { 
   CreateTravelGroupDto, 
   AddMemberDto, 
@@ -42,7 +43,8 @@ export class TravelGroupController {
     private readonly getTripItemByID: GetTripItemByID,
     private readonly updateTripItem: UpdateTriptItem,
     private readonly deleteTripItem: DeleteTripItem,
-    private readonly getTripMembersByGroup: GetTripMembersByGroup
+    private readonly getTripMembersByGroup: GetTripMembersByGroup,
+    private readonly getCurrentLocationProximityItems: findProximityItems,
   ) {}
 
   createGroup = async (req: Request, res: Response) => {
@@ -117,8 +119,6 @@ export class TravelGroupController {
 
 
   addItem = async (req: Request, res: Response) => {
-    console.log("req body: ", req.body);
-    console.log("req params: ", req.params);
     const dto = plainToInstance(AddTripItemDto, {
       ...req.body,
       groupId: req.params.groupId
@@ -152,7 +152,8 @@ export class TravelGroupController {
   };
   getTripItemById = async (req: Request, res: Response) => {
     const item = await this.getTripItemByID.execute(req.params.itemId);
-    res.json(TripItemResponseDto.fromDomain(item));
+  
+    res.json(item);
   };
   updateTripItemHandler = async (req: Request, res: Response) => {
     const updatedItem = await this.updateTripItem.execute(req.params.itemId, req.body);
@@ -172,4 +173,40 @@ export class TravelGroupController {
     const members = await this.getTripMembersByGroup.execute(req.params.groupId);
     res.json(members.map(m => TripMemberResponseDto.fromDomain(m)));
   };
+
+
+ getProximityItems = async (req: Request, res: Response) => {
+    try {
+        const { groupId } = req.params;
+        const { x, y, radius } = req.query;
+
+        if (!groupId || !x || !y || !radius) {
+            throw new BadRequestError("Group ID and coordinates are required");
+        }
+
+        const parsedX = parseFloat(x as string);
+        const parsedY = parseFloat(y as string);
+        const parsedRadius = parseFloat(radius as string);
+
+        if (isNaN(parsedX) || isNaN(parsedY) || isNaN(parsedRadius)) {
+            throw new BadRequestError("Coordinates and radius must be valid numbers");
+        }
+
+        const items = await this.getCurrentLocationProximityItems.execute(
+            groupId, 
+            { x: parsedX, y: parsedY }, 
+            parsedRadius
+        );
+
+        res.json(items || []); // Return empty array if null
+    } catch (error) {
+        // Handle specific errors appropriately
+        if (error instanceof BadRequestError) {
+            res.status(400).json({ error: error.message });
+        } else {
+            console.error('Error in getProximityItems:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+};
 }

@@ -23,7 +23,6 @@ export class ChatController {
     if (errors.length > 0) {
       throw new BadRequestError(errors.toString());
     }
-    console.log(dto);
 
     const chat = await this.createChat.execute(dto);
     res.status(201).json(ChatResponseDto.fromDomain(chat));

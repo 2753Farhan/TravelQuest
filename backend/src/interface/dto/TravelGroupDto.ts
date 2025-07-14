@@ -31,8 +31,7 @@ export class AddMemberDto {
   userId!: string;
 
   @IsString()
-  role!: string; // 'organizer', 'planner', 'member'
-
+  role!: string; 
   @IsString()
   @IsOptional()
   invitationStatus?: string;

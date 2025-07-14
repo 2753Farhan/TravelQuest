@@ -15,6 +15,7 @@ import { GetTripItemByID } from "../../use-cases/TravelGroups.ts/GetTripItemByID
 import { UpdateTriptItem } from "../../use-cases/TravelGroups.ts/UpdateTripItem";
 import { DeleteTripItem } from "../../use-cases/TravelGroups.ts/DeleteTripItem";
 import { GetTripMembersByGroup } from "../../use-cases/TravelGroups.ts/GetTripMembersByGroup";
+import { findProximityItems } from "../../use-cases/TravelGroups.ts/FindProximityItems";
 
 const router = Router();
 const repository = new KnexTravelGroupRepository();
@@ -32,6 +33,7 @@ const getTripItemByID = new GetTripItemByID(repository);
 const updateTripItem = new UpdateTriptItem(repository);
 const deleteTripItem = new DeleteTripItem(repository);
 const getTripMembersByGroup = new GetTripMembersByGroup(repository);
+const FindProximityItems = new findProximityItems(repository);
 
 const controller = new TravelGroupController(
   createTravelGroup,
@@ -46,7 +48,8 @@ const controller = new TravelGroupController(
   getTripItemByID,
   updateTripItem,
   deleteTripItem,
-  getTripMembersByGroup
+  getTripMembersByGroup,
+  FindProximityItems
 );
 
 router.post("/", asyncHandler(controller.createGroup.bind(controller)));
@@ -61,5 +64,5 @@ router.get("/items/:itemId", asyncHandler(controller.getTripItemById.bind(contro
 router.patch("/items/:itemId", asyncHandler(controller.updateTripItemHandler.bind(controller)));
 router.delete("/items/:itemId", asyncHandler(controller.deleteTripItemHandler.bind(controller)));
 router.get("/:groupId/members", asyncHandler(controller.getTripMembersByGroupHandler.bind(controller)));
-
+router.post("/:groupId/proximity-items", asyncHandler(controller.getProximityItems.bind(controller)));
 export default router;

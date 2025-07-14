@@ -10,10 +10,12 @@ export class CreatePlaceDto {
   name!: string;
 
   @IsNumber()
-  x!: number; // longitude
+  x!: number; 
 
   @IsNumber()
-  y!: number; // latitude
+  y!: number; 
+
+  distance?: number; 
 
   @IsString()
   @IsOptional()
@@ -30,6 +32,7 @@ export class PlaceResponseDto {
     public readonly type: string,
     public readonly name: string,
     public readonly coordinates: { x: number; y: number },
+    public readonly distance?: number, 
     public readonly address?: string,
     public readonly details: Record<string, any> = {},
     public readonly created_at?: Date,
@@ -42,6 +45,7 @@ export class PlaceResponseDto {
       place.type,
       place.name,
       { x: place.geo_coordinates.x, y: place.geo_coordinates.y },
+      place.distance,
       place.address,
       place.details,
       place.created_at,
