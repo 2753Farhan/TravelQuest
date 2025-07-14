@@ -9,9 +9,6 @@ export default function ProtectedRoute() {
     return <LoadingSpinner fullPage />;
   }
 
-  // Add debug logging:
-  console.log('ProtectedRoute check:', { isAuthenticated, isLoading ,user});
-
   if (!isAuthenticated) {
     return <Navigate to="/auth/login" replace />;
   }

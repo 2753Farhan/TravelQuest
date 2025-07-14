@@ -8,7 +8,7 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor
+
 apiClient.interceptors.request.use((config: { headers: { Authorization: string; }; }) => {
   const token = localStorage.getItem('accessToken');
   if (token) {
@@ -17,13 +17,13 @@ apiClient.interceptors.request.use((config: { headers: { Authorization: string; 
   return config;
 });
 
-// Response interceptor
+
 apiClient.interceptors.response.use(
   (response: any) => response,
   async (error: { config: any; response: { status: number; }; }) => {
     const originalRequest = error.config;
     
-    // Only handle 401 errors for specific endpoints
+    
     if (error.response?.status === 401 && 
         !originalRequest._retry && 
         !originalRequest.url.includes('/auth/')) {
@@ -42,7 +42,6 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
         return apiClient(originalRequest);
       } catch (err) {
-        // Only redirect if not already on login page
         if (!window.location.pathname.startsWith('/auth/login')) {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
