@@ -4,9 +4,9 @@ import { getTravelGroupById } from '../../api/travelgroup'
 import LoadingSpinner from '../../ui/LoadingSpinner'
 import TripItems from '../../components/groups/TripItems'
 import GroupChat from '../../components/groups/GroupChat'
-import { CalendarDays, Users, MapPin, Edit3, Share2, Settings, Globe2, Clock, MessageCircle } from 'lucide-react'
+import { CalendarDays, Users, MapPin,Settings, Globe2, Clock, MessageCircle } from 'lucide-react'
 import { getGroupMembers } from '../../api/travelgroup'
-
+import GroupMembersList from '../../components/groups/GroupMembersList'
 export default function GroupDetailPage() {
   const { groupId } = useParams()
 
@@ -145,6 +145,9 @@ const { data: membersCount } = useQuery({
                     Members
                   </h2>
                   <p className="text-gray-600 mt-1">Travel companions</p>
+                </div>
+                <div className="p-6">
+                  <GroupMembersList groupId={groupId || ''} />
                 </div>
 
               </div>
