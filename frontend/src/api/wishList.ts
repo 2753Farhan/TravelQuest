@@ -1,6 +1,5 @@
 import apiClient from './client';
-import type { VisibilitySettings } from '../types/core';
-import type { PriorityLevels } from '../types/core';
+import type {  WishlistItem, wishlists } from '../types/core';
 
 export const getWishlists = async (userId: string) => {
   const response = await apiClient.get(`/wishlists/user/${userId}`);
@@ -13,20 +12,13 @@ export const getWishlistById = async (wishlistId: string) => {
 };
 
 
-export const createWishlist = async (data: {
-  userId: string;
-  title: string;
-  visibility: VisibilitySettings;
-}) => {
+export const createWishlist = async (data: wishlists) => {
   const response = await apiClient.post('/wishlists', data);
   return response.data;
 };
 
 
-export const updateWishlist = async (wishlistId: string, data: Partial<{
-  title: string;
-  visibility: VisibilitySettings;
-}>) => {
+export const updateWishlist = async (wishlistId: string, data: Partial<wishlists>) => {
   const response = await apiClient.patch(`/wishlists/${wishlistId}`, data);
   return response.data;
 };
@@ -45,24 +37,13 @@ export const getWishlistItems = async (wishlistId: string) => {
 
 
 export const addWishlistItem = async (wishlistId: string, data: {
-  placeId?: string;
-  priority: PriorityLevels;
-  targetSeason?: string;
-  notificationRadius?: number;
-  isActive?: boolean;
-  details?: Record<string, any>;
+
 }) => {
   const response = await apiClient.post(`/wishlists/${wishlistId}/items`, data);
   return response.data;
 };
 
-export const updateWishlistItem = async (itemId: string, data: Partial<{
-  priority: PriorityLevels;
-  targetSeason?: string;
-  notificationRadius?: number;
-  isActive?: boolean;
-  details?: Record<string, any>;
-}>) => {
+export const updateWishlistItem = async (itemId: string, data: Partial<WishlistItem>) => {
   const response = await apiClient.patch(`/wishlists/items/${itemId}`, data);
   return response.data;
 };

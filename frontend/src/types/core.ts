@@ -35,62 +35,52 @@ export type InvitationStatus = 'pending' | 'accepted' | 'declined' | 'revoked'
 
 
 export interface TravelLog {
-  logId: string         
-  title: string        
-  description: string  
-  creatorId: string    
-  createdAt: string    
-  updatedAt?: string   
-  startDate?: string   
-  endDate?: string    
-  visibility: VisibilitySettings  
-  status: TripStatus   
+  title: string;
+  placeId?: string;
+  transportId?: string;
+  startTime?: string;
+  endTime?: string;
+  date?: string;
+  status?: string;
+  addedBy: string;
+  details?: Record<string, any>;  
 }
 
 
 export interface LogEntry {
-    entryType: string
-    entryId: string,
-    logId: string,
-    placeId : string | null,
-    transportRouteId: string | null,
-    title: string,
-    cost: number | null,
-    timeSpent: string | null,
-    effortRating: number | null,
-    rating: number | null,
-    details: Record<string, any>,
-    createdAt: Date
+  logId: string
+  placeId?: string
+  transportRouteId?: string
+  title: string
+  cost?: number
+  timeSpent?: string
+  effortRating?: number
+  rating?: number
+  details?: Record<string, any>
 }
 
 
 export interface TransportOption {
-  transport_id: string;
-  transport_type: string;
-  provider?: string;
-  details?: Record<string, any>;
+  transport_type: string
+  provider?: string
+  details?: Record<string, any>
 }
 export interface Place {
-  id: string;
-  type: string;
-  name: string;
-  coordinates: {
-    x: number;
-    y: number;
-  };
-  address?: string;
-  details?: Record<string, any>;
+  type: string
+  name: string
+  x: number
+  y: number
+  address?: string
+  details?: Record<string, any>
 }
 
 export interface TransportRoute {
-  transport_type: string | undefined
-  route_id: string;
-  transport_id: string;
-  start_place_id: string;
-  end_place_id?: string;
-  cost?: number | undefined;
-  duration?: string;
-  details?: Record<string, any>;
+  transport_id: string
+  start_place_id: string
+  end_place_id?: string
+  cost?: number
+  duration?: string
+  details?: Record<string, any>
 }
 
 
@@ -100,6 +90,15 @@ interface BaseUser {
   email?: string
   avatar?: string
   role?: UserRoles
+}
+
+
+export interface TravelGroup {
+    creatorId: string
+  title: string
+  startDate?: string
+  endDate?: string
+  status?: string
 }
 
 
@@ -114,14 +113,67 @@ export interface GroupMember {
 }
 
 
+export interface AddMemberData {
+  userId: string
+  role: string
+  invitationDetails?: Record<string, any>
+}
+
+
+export interface RespondToInvitationData {
+  userId: string
+  action: 'accept' | 'decline'
+}
+
+
+export interface TripItem {
+  title: string
+  placeId?: string
+  transportId?: string
+  startTime?: string
+  endTime?: string
+  date?: string
+  status?: string
+  addedBy: string
+  details?: Record<string, any>;
+}
+
+
+export interface VoteOnTripItemData {
+  userId: string
+  vote: 'up' | 'down'
+}
+
 
 export interface ChatMessage {
-  chatId: string
-  type: 'group'
-  groupId: string
-  userId: string | null
+  type: string
+  parent_id?: string
+  group_id?: string
+  user_id?: string
+  title?: string
+  content?: string
+  details?: Record<string, any>
+}
+
+export interface Notification {
+  userId: string
+  type: string
+  title: string
   content: string
-  createdAt: string
-  parentId?: string
-  details?: { replies?: ChatMessage[] }
+  relatedEntityType?: string
+  relatedEntityId?: string
+}
+export interface wishlists {
+  userId: string
+  title: string
+  visibility: VisibilitySettings
+}
+
+export interface WishlistItem {
+  placeId?: string;
+  priority: PriorityLevels;
+  targetSeason?: string;
+  notificationRadius?: number;
+  isActive?: boolean;
+  details?: Record<string, any>;
 }

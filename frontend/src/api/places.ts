@@ -1,4 +1,5 @@
 // src/api/places.ts
+import type { Place } from '../types/core'
 import apiClient from './client'
 
 export const getPlaces = async (page?: number, limit?: number) => {
@@ -25,14 +26,7 @@ export const findNearbyPlaces = async (lat: number, lng: number, radius: number 
   return response.data
 }
 
-export const createPlace = async (data: {
-  type: string
-  name: string
-  x: number
-  y: number
-  address?: string
-  details?: Record<string, any>
-}) => {
+export const createPlace = async (data: Place) => {
   const response = await apiClient.post('/places', data)
   return response.data
 }

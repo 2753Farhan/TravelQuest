@@ -1,3 +1,4 @@
+import type { Notification } from '../types/core'
 import apiClient from './client'
 
 export const getUserNotifications = async (userId: string, unreadOnly: boolean = false) => {
@@ -7,14 +8,7 @@ export const getUserNotifications = async (userId: string, unreadOnly: boolean =
   return response.data
 }
 
-export const createNotification = async (data: {
-  userId: string
-  type: string
-  title: string
-  content: string
-  relatedEntityType?: string
-  relatedEntityId?: string
-}) => {
+export const createNotification = async (data: Notification) => {
   const response = await apiClient.post('/notifications', data)
   return response.data
 }

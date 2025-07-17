@@ -1,4 +1,5 @@
 import apiClient from './client'
+import type { ChatMessage } from '../types/core';
 
 export const getGroupChats = async (groupId: string) => {
   const response = await apiClient.get(`/chats/group/${groupId}`)
@@ -10,15 +11,7 @@ export const getChatThreads = async (parentId: string) => {
   return response.data
 }
 
-export const createChat = async (data: {
-  type: string
-  parent_id?: string
-  group_id?: string
-  user_id?: string
-  title?: string
-  content?: string
-  details?: Record<string, any>
-}) => {
+export const createChat = async (data: ChatMessage) => {
   const response = await apiClient.post('/chats', data)
   return response.data
 }

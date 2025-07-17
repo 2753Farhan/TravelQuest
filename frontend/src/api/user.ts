@@ -2,7 +2,6 @@ import apiClient from "./client";
 
 export const getUserById = async (userId: string) => {
   if (!userId) {
-    console.error("userId is required");
     throw new Error("userId is required");
   }
   const response = await apiClient.get(`/users/${userId}`);
@@ -18,7 +17,6 @@ export const getAllUsers = async () => {
 
 export const updateUser = async (userId: string, data: any) => {
   if (!userId) {
-    console.error("userId is required");
     throw new Error("userId is required");
   }
   const response = await apiClient.patch(`/users/me`, data);

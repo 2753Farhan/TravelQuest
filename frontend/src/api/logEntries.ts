@@ -1,3 +1,4 @@
+import type { LogEntry } from '../types/core'
 import apiClient from './client'
 
 export const getLogEntries = async (logId: string, expand?: boolean) => {
@@ -12,31 +13,12 @@ export const getLogEntryById = async (entryId: string, expand?: boolean) => {
   return response.data
 }
 
-export const createLogEntry = async (data: {
-  logId: string
-  placeId?: string
-  transportRouteId?: string
-  title: string
-  cost?: number
-  timeSpent?: string
-  effortRating?: number
-  rating?: number
-  details?: Record<string, any>
-}) => {
+export const createLogEntry = async (data: LogEntry) => {
   const response = await apiClient.post('/log-entries', data)
   return response.data
 }
 
-export const updateLogEntry = async (entryId: string, data: Partial<{
-  placeId?: string
-  transportRouteId?: string
-  title: string
-  cost?: number
-  timeSpent?: string
-  effortRating?: number
-  rating?: number
-  details?: Record<string, any>
-}>) => {
+export const updateLogEntry = async (entryId: string, data: Partial<LogEntry>) => {
   const response = await apiClient.patch(`/log-entries/${entryId}`, data)
   return response.data
 }

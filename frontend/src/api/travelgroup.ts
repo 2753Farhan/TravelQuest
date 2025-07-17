@@ -1,3 +1,4 @@
+import type { AddMemberData, RespondToInvitationData, TravelGroup, TripItem, VoteOnTripItemData } from '../types/core'
 import apiClient from './client'
 
 export const getTravelGroups = async (userId: string) => {
@@ -10,22 +11,13 @@ export const getTravelGroupById = async (groupId: string) => {
   return response.data
 }
 
-export const createTravelGroup = async (data: {
-  creatorId: string
-  title: string
-  startDate?: string
-  endDate?: string
-  status?: string
-}) => {
+export const createTravelGroup = async (data: TravelGroup) => {
   const response = await apiClient.post('/travel-groups', data)
   return response.data
 }
 
-export const addGroupMember = async (groupId: string, data: {
-  userId: string
-  role: string
-  invitationDetails?: Record<string, any>
-}) => {
+export const addGroupMember = async (groupId: string, data: AddMemberData
+) => {
   const response = await apiClient.post(`/travel-groups/${groupId}/members`, data)
   return response.data
 }
@@ -36,25 +28,12 @@ export const getGroupMembers = async (groupId: string) => {
   return response.data
 }
 
-export const respondToInvitation = async (membershipId: string, data: {
-  userId: string
-  action: 'accept' | 'decline'
-}) => {
+export const respondToInvitation = async (membershipId: string, data: RespondToInvitationData) => {
   const response = await apiClient.patch(`/travel-groups/members/${membershipId}/respond`, data)
   return response.data
 }
 
-export const addTripItem = async (groupId: string, data: {
-  title: string;
-  placeId?: string;
-  transportId?: string;
-  startTime?: string;
-  endTime?: string;
-  date?: string;
-  status?: string;
-  addedBy: string;
-  details?: Record<string, any>;
-}) => {
+export const addTripItem = async (groupId: string, data: TripItem) => {
   const response = await apiClient.post(`/travel-groups/${groupId}/items`, data)
   return response.data
 }
@@ -65,10 +44,7 @@ export const getTripItemByGroupId = async (groupId : string) => {
 }
 
 
-export const voteOnTripItem = async (itemId: string, data: {
-  userId: string
-  vote: 'up' | 'down'
-}) => {
+export const voteOnTripItem = async (itemId: string, data: VoteOnTripItemData) => {
   const response = await apiClient.post(`/travel-groups/items/${itemId}/vote`, data)
   return response.data
 }

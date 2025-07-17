@@ -1,3 +1,4 @@
+import type { TransportOption, TransportRoute } from '../types/core'
 import apiClient from './client'
 
 export const getTransportOptions = async () => {
@@ -36,23 +37,12 @@ export const getTransportRoutes = async (startPlaceId?: string, endPlaceId?: str
   return response.data;
 }
 
-export const createTransportOption = async (data: {
-  transport_type: string
-  provider?: string
-  details?: Record<string, any>
-}) => {
+export const createTransportOption = async (data: TransportOption) => {
   const response = await apiClient.post('/transports/options', data)
   return response.data
 }
 
-export const createTransportRoute = async (data: {
-  transport_id: string
-  start_place_id: string
-  end_place_id?: string
-  cost?: number
-  duration?: string
-  details?: Record<string, any>
-}) => {
+export const createTransportRoute = async (data: TransportRoute) => {
   const response = await apiClient.post('/transports/routes', data)
   return response.data
 }

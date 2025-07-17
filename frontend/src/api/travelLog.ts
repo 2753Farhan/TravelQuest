@@ -1,5 +1,5 @@
 import apiClient from './client'
-import type { VisibilitySettings } from '../types/core'
+import type { TravelLog, VisibilitySettings } from '../types/core'
 import type { TripStatus } from '../types/core'
 export const getTravelLogs = async (userId?: string) => {
   if (!userId) {
@@ -16,28 +16,12 @@ export const getTravelLogById = async (logId: string) => {
   return response.data
 }
 
-export const createTravelLog = async (data: {
-  title: string
-  description: string
-  creatorId: string
-  startDate?: string
-  endDate?: string
-  visibility?: VisibilitySettings
-  status?: TripStatus
-}) => {
+export const createTravelLog = async (data: TravelLog) => {
   const response = await apiClient.post('/travel-logs', data)
   return response.data
 }
 
-export const updateTravelLog = async (logId: string, data: Partial<{
-  title: string
-  description: string
-  start_date?: string
-  end_date?: string
-  visibility: VisibilitySettings
-  status: TripStatus
-  creatorId: string
-}>) => {
+export const updateTravelLog = async (logId: string, data: Partial<TravelLog>) => {
 
   
   const response = await apiClient.patch(`/travel-logs/${logId}`, data)
