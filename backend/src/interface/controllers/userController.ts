@@ -1,74 +1,52 @@
 import { Request, Response } from "express";
-import {plainToInstance} from "class-transformer";
-import {validate} from "class-validator"
-import { CreateUser } from "../../use-cases/users/CreateUser";
-import { GetUsers } from "../../use-cases/users/GetUsers";
-import { CreateUserDto,UserResponseDto } from "../dto/CreateUserDto";
+import { plainToInstance } from "class-transformer";
+import { validate } from "class-validator";
+import { GetCurrentUser } from "../../use-cases/users/GetCurrentUser";
+import { UpdateUser } from "../../use-cases/users/UpdateUser";
+import { GetAllUsers } from "../../use-cases/users/GetAllUser";
+import { UpdateUserDto } from "../dto/UserDto";
 import { BadRequestError } from "../errors/BadRequestError";
-export class UserController {
-  constructor(
-    private readonly createUser: CreateUser,
-    private readonly getUsers: GetUsers
-  ) {}
+import { asyncHandler } from "../middlewares/asyncHandler";
+import { KnexUserRepository } from "../../infrastructure/repositories/KnexUserRepository";
 
- async create(req: Request, res: Response): Promise<void> {
-    const dto = plainToInstance(CreateUserDto, req.body);
+export class UserController {
+  private getCurrentUser: GetCurrentUser;
+  private updateUser: UpdateUser;
+  private getAllUsers: GetAllUsers;
+
+  constructor() {
+    const userRepository = new KnexUserRepository();
+    this.getCurrentUser = new GetCurrentUser(userRepository);
+    this.updateUser = new UpdateUser(userRepository);
+    this.getAllUsers = new GetAllUsers(userRepository);
+  }
+
+  getCurrent = async (req: Request, res: Response) => {
+    if (!req.user) {
+      throw new BadRequestError("User not authenticated");
+    }
+    const user = await this.getCurrentUser.execute(req.user.userId);
+    res.json(user);
+  };
+
+  update = async (req: Request, res: Response) => {
+    if (!req.user) {
+      throw new BadRequestError("User not authenticated");
+    }
+
+    const dto = plainToInstance(UpdateUserDto, req.body);
     const errors = await validate(dto);
 
     if (errors.length > 0) {
-      const message = errors
-        .map((e) => Object.values(e.constraints || {}).join(", "))
-        .join("; ");
-      throw new BadRequestError(message);
+      throw new BadRequestError(errors.toString());
     }
 
-      const user = await this.createUser.execute(dto);
-      res.status(201).json(UserResponseDto.fromDomain(user));
+    const updatedUser = await this.updateUser.execute(req.user.userId, dto);
+    res.json(updatedUser);
+  };
 
-  }
-
-   async findAll(_req: Request, res: Response) : Promise<void> {
-
-      const users = await this.getUsers.execute();
-      res.json(users.map(UserResponseDto.fromDomain));
-
-  }
+  getAll = async (req: Request, res: Response) => {
+    const users = await this.getAllUsers.execute();
+    res.json(users);
+  };
 }
-
-
-
-
-
-
-
-// import { Request, Response } from "express";
-// import { CreateUser } from "../../use-cases/users/CreateUser";
-// import { GetUsers } from "../../use-cases/users/GetUsers";
-// import { CreateUserDto } from "../dto/CreateUserDto";
-// export class UserController {
-//   constructor(
-//     private readonly createUser: CreateUser,
-//     private readonly getUsers: GetUsers
-//   ) {}
-
-//   async create(req: Request, res: Response): Promise<void> {
-//     try {
-//       const userData: CreateUserDto = req.body;
-//       const user = await this.createUser.execute(userData);
-//       res.status(201).json(user);
-//     } catch (error) {
-//       const errorMessage = error instanceof Error ? error.message : "Unknown error";
-//       res.status(500).json({ error: errorMessage });
-//     }
-//   }
-
-//   async findAll(req: Request, res: Response): Promise<void> {
-//     try {
-//       const users = await this.getUsers.execute();
-//       res.status(200).json(users);
-//     } catch (error) {
-//       const errorMessage = error instanceof Error ? error.message : "Unknown error";
-//       res.status(500).json({ error: errorMessage });
-//     }
-//   }
-// }

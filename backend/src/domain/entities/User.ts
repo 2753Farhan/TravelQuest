@@ -1,24 +1,32 @@
-export interface User {
-    id : string,
-    name: string,
-    email: string,
-    createdAt: Date,
-    updatedAt: Date
-}
+import { UserRoles } from "../../shared/types";
+export class User {
+  constructor(
+    public readonly id: string,
+    public readonly username: string,
+    public readonly email: string,
+    public password: string,
+    public readonly role: UserRoles,
+    public readonly profilePicUrl?: string,
+    public readonly bio?: string,
+    public readonly createdAt: Date = new Date(),
+    public readonly updatedAt?: Date,
+    public readonly isVerified: boolean = false,
+    public readonly refreshToken?: string
+  ) {}
 
-
-export class UserEntity implements User {
-    public readonly id : string;
-    public readonly name : string;
-    public readonly email : string;
-    public readonly createdAt: Date;
-    public readonly updatedAt: Date;
-
-    constructor(props: Omit<User, 'id'| 'createdAt' | 'updatedAt'>,id?:string){
-        this.id = id || Math.random().toString(36).substring(2,9);
-        this.name = props.name;
-        this.email = props.email;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
-       }
+  static fromRaw(raw: any): User {
+    return new User(
+      raw.id,
+      raw.username,
+      raw.email,
+      raw.password_hash,
+      raw.role,
+      raw.profile_pic_url,
+      raw.bio,
+      new Date(raw.created_at),
+      raw.updated_at ? new Date(raw.updated_at) : undefined,
+      raw.is_verified,
+      raw.refresh_token
+    );
+  }
 }

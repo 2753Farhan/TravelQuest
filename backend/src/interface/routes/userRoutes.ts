@@ -1,18 +1,21 @@
 import { Router } from "express";
 import { UserController } from "../controllers/userController";
-import { KnexUserRepository } from "../../infrastructure/repositories/KnexUserRepository";
-import { CreateUser } from "../../use-cases/users/CreateUser";
-import { GetUsers } from "../../use-cases/users/GetUsers";
 import { asyncHandler } from "../middlewares/asyncHandler";
+import { authMiddleware } from "../middlewares/authMiddleware";
+import { roleMiddleware } from "../middlewares/roleMiddleware";
+import { UserRoles } from "../../shared/types";
 
 const router = Router();
+const controller = new UserController();
 
-const userRepository = new KnexUserRepository();
-const createUser = new CreateUser(userRepository);
-const getUsers = new GetUsers(userRepository);
-const userController = new UserController(createUser, getUsers);
+router.get("/me", authMiddleware, asyncHandler(controller.getCurrent.bind(controller)));
+router.patch("/me", authMiddleware, asyncHandler(controller.update.bind(controller)));
 
-router.post("/", asyncHandler(userController.create.bind(userController)));
-router.get("/", asyncHandler(userController.findAll.bind(userController)));
+
+router.get("/", 
+  authMiddleware, 
+  roleMiddleware([UserRoles.ADMIN, UserRoles.MODERATOR]), 
+  asyncHandler(controller.getAll.bind(controller))
+);
 
 export default router;
