@@ -1,5 +1,6 @@
 import { IsString, IsOptional, IsUrl, IsUUID } from "class-validator";
 import { User } from "../../domain/entities/User";
+import { UserRoles } from "../../shared/types";
 
 export class UpdateUserDto {
   @IsUrl()
@@ -9,6 +10,10 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   bio?: string;
+
+  @IsString()
+  @IsOptional()
+  role?: UserRoles
 }
 
 export class UserResponseDto {

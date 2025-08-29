@@ -9,6 +9,9 @@ import { GetTransportById } from "../../use-cases/transorts/GetTransportById";
 import { BadRequestError } from "../errors/BadRequestError";
 import { CreateTransportOptionDto, TransportOptionResponseDto } from "../dto/CreateTransportOptionDto";
 import { CreateTransportRouteDto, TransportRouteResponseDto } from "../dto/CreateTransportRouteDto";
+import {FindAllTransportRoutes} from "../../use-cases/transorts/FindAllTransportRoutes";
+import { FindTransportRouteByTranportId } from "../../use-cases/transorts/FindTransportRouteByTranportId";
+import { FindRouteById } from "../../use-cases/transorts/FindRouteById";
 
 export class TransportController {
   constructor(
@@ -16,7 +19,10 @@ export class TransportController {
     private readonly getTransportOptions: GetTransportOptions,
     private readonly getTransportById: GetTransportById,
     private readonly createTransportRoute: CreateTransportRoute,   
-    private readonly findTransportRoutes: FindTransportRoutes     
+    private readonly findTransportRoutes: FindTransportRoutes , 
+    private readonly findAllTransportRoutes: FindAllTransportRoutes,
+    private readonly findTransportRoutesByTransportId : FindTransportRouteByTranportId,
+    private readonly findRouteById : FindRouteById   
   ) {}
 
   async createOption(req: Request, res: Response) {
@@ -63,12 +69,43 @@ export class TransportController {
 
   async findRoutes(req: Request, res: Response) {
     const { startId, endId } = req.query;
-    if (!startId || !endId) {
-      throw new BadRequestError("Both startId and endId are required");
+    
+    if (startId || endId) {
+        // Handle specific route query
+        if (!startId || !endId) {
+            throw new BadRequestError("Both startId and endId are required when querying specific routes");
+        }
+        const routes = await this.findTransportRoutes.execute(startId as string, endId as string);
+        res.json(routes.map(TransportRouteResponseDto.fromDomain));
+    } else {
+        // Handle get all routes case
+        const routes = await this.findAllTransportRoutes.execute();
+        res.json(routes.map(TransportRouteResponseDto.fromDomain));
     }
-    const routes = await this.findTransportRoutes.execute(startId as string, endId as string);
-    res.json(routes.map(TransportRouteResponseDto.fromDomain));
   }
+
+  async findAllRoutesByTransportId(req: Request, res: Response){
+    const routes = this.findTransportRoutesByTransportId.execute(req.params.id)
+    if(!routes) {
+      throw new BadRequestError('Failed to get transport routes');
+    }
+
+    res.json((await routes).map(TransportRouteResponseDto.fromDomain)); 
+  }
+
+
+  async findRouteByRouteId (req: Request,res: Response){
+    const route = await this.findRouteById.execute(req.params.id);
+    if(!route) {
+      throw new BadRequestError('Failed to get transport routes');
+    }
+    res.json(TransportRouteResponseDto.fromDomain(route));
+  }
+
+
+   
+
+
 
 
 }

@@ -88,10 +88,21 @@ export class WishlistController {
   });
 
   findNearby = asyncHandler(async(req: Request, res: Response) => {
+
     const userId = req.params.userId;
+    let {x,y,radius} = req.query;
+    if (!x || !y || !radius) {
+      throw new BadRequestError("x, y, and radius parameters are required");
+    }
+
     if(!userId) throw new BadRequestError("User ID required");
 
-    const dto = plainToInstance(FindNearbyWishlistItemsDto, req.query );
+
+    const dto = plainToInstance(FindNearbyWishlistItemsDto,     {
+    x  : parseFloat(x as string),
+    y  : parseFloat(y as string),
+    radius : parseFloat(radius as string)
+    } );
     const errors = await validate(dto);
 
 
@@ -99,11 +110,11 @@ export class WishlistController {
       throw new BadRequestError(errors.toString());
     }
 
-    const radius = dto.radius || 5000; 
+    const checkedradius = dto.radius || 5000; 
     const items = await this.findNearbyWishlistItems.execute(
       userId,
       { x: dto.x, y: dto.y },
-      radius
+      checkedradius
     );
 
     res.json(items);
@@ -117,15 +128,14 @@ findOverlappingWishlists = asyncHandler(async (req: Request, res: Response) => {
       wishlistId: req.query.wishlistId
     });
     const errors = await validate(dto);
-
     if (errors.length > 0) {
       throw new BadRequestError(errors.toString());
     }
-
+    ('this is the dto bro: '+ dto);
     const overlaps = await this.findOverlappingWishlistsUseCase.execute(dto);
     res.json(
       overlaps.map(({ wishlist, commonItems }) => ({
-        wishlist: WishlistResponseDto.fromDomain(wishlist),
+        wishlist: wishlist,
         commonItems
       }))
     );

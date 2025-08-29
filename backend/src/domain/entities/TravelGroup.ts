@@ -6,8 +6,8 @@ export class TravelGroup {
     public readonly groupId: string,
     public readonly creatorId: string,
     public readonly title: string,
-    public readonly startDate?: Date,
-    public readonly endDate?: Date,
+    public readonly start_date?: Date,
+    public readonly end_date?: Date,
     public readonly status: TripStatus = TripStatus.PLANNING,
     public readonly createdAt: Date = new Date(),
     public readonly updatedAt?: Date

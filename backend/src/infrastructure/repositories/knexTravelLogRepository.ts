@@ -11,8 +11,8 @@ export class KnexTravelLogRepository implements TravelLogRepository {
         title: log.title,
         description: log.description,
         creator_id: log.creatorId,
-        start_date: log.startDate,
-        end_date: log.endDate,
+        start_date: log.start_date,
+        end_date: log.end_date,
         visibility: log.visibility,
         status: log.status
       })
@@ -36,7 +36,6 @@ export class KnexTravelLogRepository implements TravelLogRepository {
       .where('log_id', logId)
       .update({
         ...updates,
-        updated_at: db.fn.now()
       })
       .returning('*');
     

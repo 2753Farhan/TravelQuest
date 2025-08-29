@@ -54,16 +54,19 @@ export class AddWishlistItemDto {
 export class WishlistResponseDto {
   constructor(
     public readonly wishlistId: string,
+    public readonly userId: string,
     public readonly title: string,
     public readonly visibility: VisibilitySettings,
     public readonly createdAt: Date,
     public readonly updatedAt?: Date,
-    public readonly itemCount?: number
+    public readonly itemCount?: number,
+    public readonly username?: string
   ) {}
 
   static fromDomain(wishlist: Wishlist, itemCount?: number): WishlistResponseDto {
     return new WishlistResponseDto(
       wishlist.wishlistId,
+      wishlist.userId,
       wishlist.title,
       wishlist.visibility,
       wishlist.createdAt,

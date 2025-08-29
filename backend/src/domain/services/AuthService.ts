@@ -63,7 +63,6 @@ export class AuthService {
   }
 
   generateVerificationToken(userId: string): string {
-    console.log("from generate verification"+env.JWT_SECRET)
     return jwt.sign(
       { userId },
       env.JWT_SECRET,
@@ -104,9 +103,7 @@ export class AuthService {
 
   async verifyEmail(token: string): Promise<void> {
     try {
-      console.log("from verify email"+ env.JWT_SECRET);
       const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
-      console.log(payload)
       await this.userRepository.verifyUser(payload.userId);
     } catch (error) {
       throw new UnauthorizedError('Invalid verification token');

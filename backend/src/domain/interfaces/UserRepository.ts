@@ -11,4 +11,5 @@ export interface UserRepository {
   findAll(role?: UserRoles): Promise<User[]>;
   updateRefreshToken(id: string, refreshToken: string | null): Promise<void>;
   verifyUser(id: string): Promise<void>;
+  switchRole(id: string, newRole: UserRoles): Promise<User>;
 }

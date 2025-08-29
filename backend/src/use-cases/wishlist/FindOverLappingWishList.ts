@@ -1,6 +1,6 @@
 // backend/src/use-cases/wishlist/FindOverlappingWishlists.ts
 import { Wishlist, WishlistItem } from "../../domain/entities/Wishlist";
-import { WishlistRepository } from "../../domain/interfaces/wishListRepository";
+import { WishlistRepository } from "../../domain/interfaces/WishListRepository";
 import { FindOverlappingWishlistsDto } from "../../interface/dto/WishListDto";
 
 export class FindOverlappingWishlists {

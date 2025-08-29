@@ -60,11 +60,28 @@ export class KnexTransportRepository implements TransportRepository {
     return route ? TransportRoute.fromRaw(route) : null;
   }
 
+
+  async findRoutesByTransportId(id: string): Promise<TransportRoute[]> {
+    const routes = await db('transport_routes')
+      .where('transport_id', id)
+      .select('*');
+    return routes.map(TransportRoute.fromRaw)
+  }
+
+
   async findRoutesBetweenPlaces(startId: string, endId: string): Promise<TransportRoute[]> {
     const routes = await db('transport_routes')
       .where('start_place_id', startId)
       .where('end_place_id', endId)
       .select('*');
+    return routes.map(TransportRoute.fromRaw);
+  }
+
+
+
+  async findAllRoutes():Promise<TransportRoute[]>{
+    const routes = await db('transport_routes')
+    .select('*');
     return routes.map(TransportRoute.fromRaw);
   }
 }

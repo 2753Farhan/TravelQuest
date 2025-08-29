@@ -6,12 +6,14 @@ import { GetLogEntries } from "../../use-cases/LogEntries/GetLogEntries";
 import { GetLogEntry } from "../../use-cases/LogEntries/GetLogEntry";
 import { CreateLogEntryDto, LogEntryResponseDto } from "../dto/CreateLogEntryDto";
 import { BadRequestError } from "../errors/BadRequestError";
+import { DeleteLogEntry } from "../../use-cases/LogEntries/DeleteLogEntry";
 
 export class LogEntryController {
   constructor(
     private readonly createLogEntry: CreateLogEntry,
     private readonly getLogEntries: GetLogEntries,
-    private readonly getLogEntry: GetLogEntry
+    private readonly getLogEntry: GetLogEntry,
+    private readonly deleteLogEntry: DeleteLogEntry
   ) {}
 
   async create(req: Request, res: Response): Promise<void> {
@@ -51,7 +53,15 @@ export class LogEntryController {
       res.json(LogEntryResponseDto.fromDomain(result));
     } else {
       const logEntry = await this.getLogEntry.execute(id);
+
       res.json(LogEntryResponseDto.fromDomain(logEntry));
     }
+  }
+
+
+  async delete(req: Request, res: Response): Promise<void> {
+    const { entryId } = req.params;
+    await this.deleteLogEntry.execute(entryId);
+    res.status(204).send();
   }
 }

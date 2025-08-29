@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import {  Response, NextFunction } from "express";
 import { ForbiddenError } from "../errors/ForbiddenError";
 import { AuthenticatedRequest } from "./authMiddleware";
 

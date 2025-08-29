@@ -4,11 +4,13 @@ export class Place {
     public readonly place_id: string,
     public readonly type: PlaceTypes,
     public readonly name: string,
-    public readonly geo_coordinates: { x: number; y: number }, // x = longitude, y = latitude
+    public readonly geo_coordinates: { x: number; y: number }, // x = longitude, y = latitude,
+    public readonly distance?: number, 
     public readonly address?: string,
     public readonly details: Record<string, any> = {},
     public readonly created_at: Date = new Date(),
-    public readonly updated_at?: Date
+    public readonly updated_at?: Date,
+
   ) {}
 
   static fromRaw(raw: any): Place {
@@ -20,6 +22,7 @@ export class Place {
         x: raw.x || raw.longitude || raw.geo_coordinates?.x || 0,
         y: raw.y || raw.latitude || raw.geo_coordinates?.y || 0
       },
+      raw.distance,
       raw.address,
       raw.details || {},
       raw.created_at,

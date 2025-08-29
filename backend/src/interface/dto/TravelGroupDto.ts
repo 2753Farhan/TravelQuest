@@ -12,11 +12,11 @@ export class CreateTravelGroupDto {
 
   @IsDateString()
   @IsOptional()
-  startDate?: string;
+  start_date?: string;
 
   @IsDateString()
   @IsOptional()
-  endDate?: string;
+  end_date?: string;
 
   @IsEnum(['planning', 'active', 'completed', 'cancelled'])
   @IsOptional()
@@ -31,8 +31,7 @@ export class AddMemberDto {
   userId!: string;
 
   @IsString()
-  role!: string; // 'organizer', 'planner', 'member'
-
+  role!: string; 
   @IsString()
   @IsOptional()
   invitationStatus?: string;
@@ -103,8 +102,8 @@ export class TravelGroupResponseDto {
     public readonly groupId: string,
     public readonly creatorId: string,
     public readonly title: string,
-    public readonly startDate?: Date,
-    public readonly endDate?: Date,
+    public readonly start_date?: Date,
+    public readonly end_date?: Date,
     public readonly status: string = 'planning',
     public readonly createdAt: Date = new Date(),
     public readonly updatedAt?: Date,
@@ -117,8 +116,8 @@ export class TravelGroupResponseDto {
       group.groupId,
       group.creatorId,
       group.title,
-      group.startDate,
-      group.endDate,
+      group.start_date,
+      group.end_date,
       group.status,
       group.createdAt,
       group.updatedAt,

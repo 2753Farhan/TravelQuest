@@ -48,10 +48,42 @@ export class KnexPlaceRepository implements PlaceRepository {
     return place ? Place.fromRaw(place) : null;
   }
 
-  async findAll(): Promise<Place[]> {
+
+async findAll(options?: { page?: number, limit?: number }): Promise<Place[] | { data: Place[], meta: any }> {
+  if (!options?.page && !options?.limit) {
+    
     const places = await db('places').select(this.selectColumns);
     return places.map(Place.fromRaw);
   }
+
+  
+  const page = options?.page || 1;
+  const limit = options?.limit || 10;
+  const offset = (page - 1) * limit;
+  
+  const [data, total] = await Promise.all([
+    db('places')
+      .select(this.selectColumns)
+      .offset(offset)
+      .limit(limit),
+      
+    db('places')
+      .count('* as total')
+      .first()
+  ]);
+
+  const totalCount = parseInt(total?.total as string, 10) || 0;
+  
+  return {
+    data: data.map(Place.fromRaw),
+    meta: {
+      page,
+      limit,
+      total: totalCount,
+      totalPages: Math.ceil(totalCount / limit)
+    }
+  };
+}
 
   async findByType(type: Place['type']): Promise<Place[]> {
     const places = await db('places')
@@ -107,4 +139,6 @@ export class KnexPlaceRepository implements PlaceRepository {
     if (!deleted) throw new NotFoundError('Place not found');
     return true;
   }
+
+
 }

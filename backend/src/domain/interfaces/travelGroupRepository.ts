@@ -18,8 +18,13 @@ export interface TravelGroupRepository {
 
   addItem(item: Omit<TripItem, 'itemId' | 'createdAt'>): Promise<TripItem>;
   findItemById(itemId: string): Promise<TripItem | null>;
+  findExtendedItemById(itemId: string): Promise<any | null>;
   findItemsByGroup(groupId: string): Promise<TripItem[]>;
   updateItem(itemId: string, updates: Partial<TripItem>): Promise<TripItem>;
   removeItem(itemId: string): Promise<boolean>;
   voteOnItem(itemId: string, userId: string, vote: 'up' | 'down'): Promise<TripItem>;
+
+  CurrentLocationProximityItem(
+    groupId: string,  point: { x: number; y: number }, radius: number) : Promise<any>;
+
 }

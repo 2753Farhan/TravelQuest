@@ -3,10 +3,10 @@ import { User } from "../../domain/entities/User";
 import { UserRepository } from "../../domain/interfaces/UserRepository";
 import { BadRequestError } from "../../interface/errors/BadRequestError";
 import { NotFoundError } from "../../interface/errors/NotFoundError";
+import { UserRoles } from "../../shared/types";
 
 export class KnexUserRepository implements UserRepository {
   async create(user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User> {
-    console.log(user);
     try {
       const [created] = await db('users')
         .insert({
@@ -19,7 +19,6 @@ export class KnexUserRepository implements UserRepository {
           is_verified: user.isVerified
         })
         .returning('*');
-        console.log(created)
 
       return User.fromRaw(created);
     } catch (error: any) {
@@ -82,4 +81,16 @@ export class KnexUserRepository implements UserRepository {
       .where('id', id)
       .update({ is_verified: true });
   }
+
+  async switchRole(id: string, newRole: UserRoles): Promise<User> {
+    const [updated] = await db('users')
+      .where('id', id)
+      .update({ role: newRole, updated_at: db.fn.now() })
+      .returning('*');
+
+    if (!updated) throw new NotFoundError('User not found');
+    return User.fromRaw(updated);
+  }
+
+
 }

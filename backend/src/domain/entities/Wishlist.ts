@@ -3,11 +3,13 @@ export enum VisibilitySettings {
   PRIVATE = 'private',
   FRIENDS = 'friends_only'
 }
+
 export enum PriorityLevels {
   LOW = 'low',
   MEDIUM = 'medium',
   HIGH = 'high'
 }
+
 export class Wishlist {
   constructor(
     public readonly wishlistId: string,
@@ -15,7 +17,8 @@ export class Wishlist {
     public readonly title: string,
     public readonly visibility: VisibilitySettings,
     public readonly createdAt: Date = new Date(),
-    public readonly updatedAt?: Date
+    public readonly updatedAt?: Date,
+    public readonly username?: string
   ) {}
 
   static fromRaw(raw: any): Wishlist {
@@ -25,7 +28,8 @@ export class Wishlist {
       raw.title,
       raw.visibility,
       new Date(raw.created_at),
-      raw.updated_at ? new Date(raw.updated_at) : undefined
+      raw.updated_at ? new Date(raw.updated_at) : undefined,
+      raw.username
     );
   }
 }
@@ -41,7 +45,8 @@ export class WishlistItem {
     public readonly isActive: boolean = true,
     public readonly details: Record<string, any> = {},
     public readonly createdAt: Date = new Date(),
-    public readonly updatedAt?: Date
+    public readonly updatedAt?: Date,
+    public readonly placeName?: string
   ) {}
 
   static fromRaw(raw: any): WishlistItem {
@@ -55,7 +60,8 @@ export class WishlistItem {
       raw.is_active,
       raw.details,
       new Date(raw.created_at),
-      raw.updated_at ? new Date(raw.updated_at) : undefined
+      raw.updated_at ? new Date(raw.updated_at) : undefined,
+      raw.place_name
     );
   }
 }

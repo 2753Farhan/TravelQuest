@@ -9,5 +9,7 @@ export interface TransportRepository {
 
   createRoute(route: Omit<TransportRoute, 'route_id' | 'created_at' | 'updated_at'>): Promise<TransportRoute>;
   findRouteById(id: string): Promise<TransportRoute | null>;
+  findRoutesByTransportId(id: string): Promise<TransportRoute[]> 
   findRoutesBetweenPlaces(startId: string, endId: string): Promise<TransportRoute[]>;
+  findAllRoutes(): Promise<TransportRoute[]>
 }

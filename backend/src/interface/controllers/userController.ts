@@ -8,18 +8,16 @@ import { UpdateUserDto } from "../dto/UserDto";
 import { BadRequestError } from "../errors/BadRequestError";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { KnexUserRepository } from "../../infrastructure/repositories/KnexUserRepository";
+import { SwitchRole } from "../../use-cases/users/SwitchRole";
 
 export class UserController {
-  private getCurrentUser: GetCurrentUser;
-  private updateUser: UpdateUser;
-  private getAllUsers: GetAllUsers;
 
-  constructor() {
-    const userRepository = new KnexUserRepository();
-    this.getCurrentUser = new GetCurrentUser(userRepository);
-    this.updateUser = new UpdateUser(userRepository);
-    this.getAllUsers = new GetAllUsers(userRepository);
-  }
+  constructor(
+    private readonly getCurrentUser: GetCurrentUser,
+    private readonly updateUser: UpdateUser,
+    private readonly getAllUsers: GetAllUsers,
+    private readonly switchRole: SwitchRole
+  ) {}
 
   getCurrent = async (req: Request, res: Response) => {
     if (!req.user) {
@@ -48,5 +46,32 @@ export class UserController {
   getAll = async (req: Request, res: Response) => {
     const users = await this.getAllUsers.execute();
     res.json(users);
+  };
+
+
+  getUserById = async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    if (!userId) {
+      throw new BadRequestError("User ID is required");
+    }
+
+    const user = await this.getCurrentUser.execute(userId);
+    if (!user) {
+      throw new BadRequestError("User not found");
+    }
+
+    res.json(user);
+  }
+
+  switchUserRole = async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const newRole = req.body.role;
+
+    if (!userId || !newRole) {
+      throw new BadRequestError("User ID and new role are required");
+    }
+
+    const updatedUser = await this.switchRole.execute(userId, newRole);
+    res.json(updatedUser);
   };
 }
