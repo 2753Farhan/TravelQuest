@@ -1,10 +1,12 @@
 import {db} from "../database/knex/knexfile"
 import { User,UserEntity } from "../../domain/entities/User";
 import { UserRepository } from "../../domain/interfaces/UserRepository";
+import { BadRequestError } from "../../interface/errors/BadRequestError";
 
 
 export class KnexUserRepository implements UserRepository{
     async create(user: UserEntity): Promise<UserEntity> {
+        try{
         const [createdUser] = await db('users')
         .insert({
             name: user.name,
@@ -13,11 +15,20 @@ export class KnexUserRepository implements UserRepository{
         .returning('*');
 
         return new UserEntity(createdUser,createdUser.id);
+        }
+        catch(error){
+            throw new BadRequestError("Failed to create User ")
+        }
     }
 
     async findAll(): Promise<User[]> {
-        const users = await db('users').select('*');
-        return users.map(user => new UserEntity(user , user.id));
+        try {
+            const users = await db('users').select('*');
+            return users.map(user => new UserEntity(user , user.id));
+        }
+        catch(error) {
+            throw new BadRequestError("Failed to fetch Users");
+        }
     }
 }
 

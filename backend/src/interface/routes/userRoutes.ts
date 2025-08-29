@@ -3,16 +3,16 @@ import { UserController } from "../controllers/userController";
 import { KnexUserRepository } from "../../infrastructure/repositories/KnexUserRepository";
 import { CreateUser } from "../../use-cases/users/CreateUser";
 import { GetUsers } from "../../use-cases/users/GetUsers";
+import { asyncHandler } from "../middlewares/asyncHandler";
+
 const router = Router();
 
-// Initialize dependencies
 const userRepository = new KnexUserRepository();
 const createUser = new CreateUser(userRepository);
 const getUsers = new GetUsers(userRepository);
 const userController = new UserController(createUser, getUsers);
 
-// Routes
-router.post("/", userController.create.bind(userController));
-router.get("/", userController.findAll.bind(userController));
+router.post("/", asyncHandler(userController.create.bind(userController)));
+router.get("/", asyncHandler(userController.findAll.bind(userController)));
 
 export default router;
